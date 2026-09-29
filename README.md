@@ -7,7 +7,7 @@ It has two features, chosen per profile:
 - **Movement**: hold the **Forward** side mouse button to hold LEFT and drag the cursor by a fixed step. It stops after a set time and starts again after a delay, for as long as Forward is held.
 - **Auto**: hold **RIGHT** to aim, then **LEFT** to fire. The cursor is pulled down following a recoil table for the selected gun (M416 or Beryl).
 
-![Mouse Studio in Auto mode, with the Beryl gun selected and the script log in the console](Screenshot_1.png)
+![Mouse Studio in Auto mode, with the Beryl gun selected and the script log in the console](app_screenshot.png)
 
 ## Requirements
 

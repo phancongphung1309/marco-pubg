@@ -73,9 +73,16 @@
                 VerticalAlignment="Center">
 
                 <Button
+                    Content="Donate"
+                    Width="90"
+                    ToolTip="Support the project"
+                    Click="Donate_Click"/>
+
+                <Button
                     x:Name="OverlayButton"
                     Content="Show Overlay"
                     Width="130"
+                    Margin="8,0,0,0"
                     Style="{StaticResource PrimaryButton}"
                     Click="Overlay_Click"/>
 

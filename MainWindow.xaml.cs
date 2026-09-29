@@ -693,6 +693,16 @@ public partial class MainWindow : Window
         );
     }
 
+    // ===== Donate =====
+
+    private void Donate_Click(
+        object sender,
+        RoutedEventArgs e
+    )
+    {
+        new DonateWindow(this).ShowDialog();
+    }
+
     // ===== Overlay =====
 
     private void Overlay_Click(
