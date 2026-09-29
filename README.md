@@ -2,9 +2,17 @@
 
 A recoil-reduction tool for **PUBG: Battlegrounds** on Windows. While you fire, it pulls the mouse down to counter the gun's vertical recoil, so your aim stays on target without dragging the mouse yourself.
 
-It works with any mouse. It does not read or change the game: it only moves the cursor, like a Logitech G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned.
+### No Logitech mouse? Don't worry, use this app.
 
-Two modes, chosen per profile:
+Most recoil macros are Lua scripts for Logitech G Hub, so they only work with a Logitech mouse. Mouse Studio runs the same kind of Lua script for **any mouse**: Razer, SteelSeries, a no-name office mouse, whatever you have. No G Hub, no special driver, no extra software.
+
+It does not read or change the game: it only moves the cursor, like a G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned. G Hub scripts port over easily, since the script functions have the same names (`MoveMouseRelative`, `IsMouseButtonPressed`, `Sleep`, …).
+
+> For Movement mode, the mouse needs a Forward side button (most gaming mice have one). Auto mode only uses the left and right buttons, so it works with any mouse.
+
+### Two modes
+
+Chosen per profile:
 
 - **Auto** (recommended for PUBG): hold **RIGHT** to aim down sights, then **LEFT** to fire. The cursor is pulled down following a recoil pattern made for the selected gun, **M416** or **Beryl M762**, until you stop firing. Press **F1** in game to switch gun.
 - **Movement**: your own pull-down. Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
