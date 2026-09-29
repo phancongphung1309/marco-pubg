@@ -1,21 +1,56 @@
 # Mouse Studio
 
-A Windows desktop app (WPF, .NET 8) that runs Lua mouse scripts, in the style of Logitech G Hub scripts. It captures mouse and keyboard input with global hooks and hands the events to a Lua script, which can move the cursor and press buttons.
+A recoil-reduction tool for **PUBG: Battlegrounds** on Windows. While you fire, it pulls the mouse down to counter the gun's vertical recoil, so your aim stays on target without dragging the mouse yourself.
 
-It has two features, chosen per profile:
+It works with any mouse. It does not read or change the game: it only moves the cursor, like a Logitech G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned.
 
-- **Movement**: hold the **Forward** side mouse button to hold LEFT and drag the cursor by a fixed step. It stops after a set time and starts again after a delay, for as long as Forward is held.
-- **Auto**: hold **RIGHT** to aim, then **LEFT** to fire. The cursor is pulled down following a recoil table for the selected gun (M416 or Beryl).
+Two modes, chosen per profile:
+
+- **Auto** (recommended for PUBG): hold **RIGHT** to aim down sights, then **LEFT** to fire. The cursor is pulled down following a recoil pattern made for the selected gun, **M416** or **Beryl M762**, until you stop firing. Press **F1** in game to switch gun.
+- **Movement**: your own pull-down. Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
+
+### Why Auto is recommended
+
+Auto is the mode to use in PUBG. Start with it, and only try Movement if you want to build your own pattern.
+
+| | **Auto** ✅ | Movement |
+| --- | --- | --- |
+| Setup | None: pick the gun and play | You find the right values by trial and error |
+| Pull-down | Follows the gun's real recoil: softer on the first shots, stronger as the spray goes on | The same step all the time |
+| Fire button | Your normal LEFT button | The Forward side button |
+| When it acts | Only while you aim (RIGHT) and fire (LEFT): hip fire and the menus are left alone | Every time Forward is held |
+| Stops | As soon as you release LEFT | After a set time, then fires again while Forward is held |
+| Switch gun | **F1** in game | **F1 to F12**, one profile per setting |
+
+In short: Auto feels like your own hands, only steadier. You aim and fire as usual, and the pull-down follows the gun.
+
+> **Warning:** using macros or recoil scripts is against the PUBG terms of service. Your account can be banned. Use at your own risk.
+
+> **Built 100% with AI.** Every line of code in this project was written by AI through vibe coding. See [About this project](#about-this-project).
 
 ![Mouse Studio in Auto mode, with the Beryl gun selected and the script log in the console](app_screenshot.png)
 
-## Requirements
+## Quick start (no install)
 
-- Windows 10 or 11
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) to build (the published single-file build needs no install)
+1. Download [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/raw/main/Marco-Pubg.zip).
+2. Extract it anywhere, for example to your Desktop. Keep all the files together: `MouseStudio.exe` needs the `Scripts` folder next to it.
+3. Open the `Marco-Pubg` folder and double-click **`MouseStudio.exe`**.
+4. Click **Yes** when Windows asks for administrator rights.
+5. Click the **Auto** card, pick your gun (**M416** or **Beryl**), and start the game. Aim with RIGHT, fire with LEFT.
+
+If Windows shows "Windows protected your PC", click **More info**, then **Run anyway**. The app is not signed, so Windows warns about it.
+
+Nothing else is needed: .NET is built into the executable. Then see [How to use](#how-to-use).
+
+## Build from source
+
+### Requirements
+
+- Windows 10 or 11 (64-bit)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), only to build from source
 - Administrator rights: the app asks for them on start (`app.manifest`), so its hooks also work while an elevated game window has focus
 
-## Build and run
+### Build and run
 
 ```powershell
 dotnet build MouseStudio.csproj
@@ -54,12 +89,28 @@ On first start the app creates one profile, **Default**, in Movement mode. The s
 
 Click one of the two cards at the top:
 
+- **Auto** (recommended): pulls the cursor down while you aim and fire.
 - **Movement**: drags the cursor while you hold the Forward side button.
-- **Auto**: pulls the cursor down while you aim and fire.
 
-The choice is saved on the current profile, and the matching script starts right away. There is no Start button: the script runs as long as the app is open.
+The app starts in Movement, so **click Auto** the first time. The choice is saved, so the app opens in Auto from then on. The matching script starts right away: there is no Start button, the script runs as long as the app is open.
 
-### 3. Use Movement
+### 3. Use Auto (recommended)
+
+1. Click the **Auto** card, then pick the gun: **M416** or **Beryl**.
+2. In game, **hold RIGHT** to aim, then **hold LEFT** to fire. The cursor is pulled down following the recoil pattern of the selected gun, until LEFT is released.
+3. Press **F1** to switch between M416 and Beryl without leaving the game. The overlay shows the gun in use.
+
+Tips:
+
+- **Aim first, then fire.** The pull-down only starts when LEFT is pressed while RIGHT is already held. Hip fire, single taps without aiming, and clicks in menus are never pulled.
+- **Hold LEFT for full sprays.** The pattern follows the whole magazine: light at first, then stronger. Releasing LEFT stops it at once, and the next burst starts from the beginning of the pattern.
+- **Press F1 when you swap guns in game**, so the pattern matches the gun in your hands. Show the overlay to see which one is active without alt-tabbing.
+- **Other guns**: pick the pattern closest to your gun. The M416 pattern suits lighter 5.56 rifles, the Beryl pattern stronger-kicking 7.62 rifles.
+- **Pulling too much or too little?** Your sensitivity or scope may differ from the one the patterns were made for. Change the numbers at the top of `Scripts/auto.lua` (bigger numbers pull harder) and restart the app.
+
+While Auto is selected, F2 to F12 do nothing and the profile list is hidden. To use profiles, click **Movement** first.
+
+### 4. Use Movement
 
 1. Set the values in the Movement panel:
 
@@ -80,7 +131,7 @@ The choice is saved on the current profile, and the matching script starts right
 
 3. **Release Forward** to stop at once. The left button is released too.
 
-### 4. Manage Movement profiles
+### 5. Manage Movement profiles
 
 Profiles let you keep several sets of Movement values and switch between them quickly. They are in the Movement panel:
 
@@ -96,16 +147,6 @@ To back up profiles or move them to another PC:
 - **Import** loads a `.json` file made by Export. The file is checked first; if it is valid, the app asks before it **replaces all current profiles** with the ones in the file.
 
 Profiles are stored in `profiles.json` next to the executable.
-
-### 5. Use Auto
-
-1. Click the **Auto** card, then pick the gun: **M416** or **Beryl**.
-2. In game, **hold RIGHT** to aim, then **hold LEFT** to fire. The cursor is pulled down following the recoil table of the selected gun, until LEFT is released.
-3. Press **F1** to switch between M416 and Beryl without leaving the game. The console and the overlay show the new gun.
-
-While Auto is selected, F2 to F12 do nothing and the profile list is hidden. To change profile, click **Movement** first.
-
-The recoil tables are at the top of `Scripts/auto.lua`, if you want to tune them.
 
 ### 6. Play with the overlay
 
@@ -159,9 +200,38 @@ Functions available to scripts (`Core/Lua/LuaApi.cs`):
 MainWindow.xaml(.cs)       Main window: profiles, features, console
 OverlayWindow.xaml(.cs)    Always-on-top status overlay
 ProfileNameDialog.xaml     New / rename profile dialog
+DonateWindow.xaml(.cs)     Donation QR code window
 Core/Input/                Global mouse and keyboard hooks, mouse output
 Core/Lua/                  Lua engine (NLua) and the script API
 Core/Profiles/             Profile model and profiles.json storage
 Scripts/                   Lua scripts copied next to the executable
 tests/MouseStudio.Tests/   xUnit tests
 ```
+
+## About this project
+
+This project was built **100% with AI, by vibe coding**. No line of the code was typed by hand: the author described what they wanted in plain words, tried the result, and asked the AI for changes until the app worked the way they wanted.
+
+The AI wrote all of it:
+
+- the WPF app: windows, dark theme, overlay and tray icon;
+- the low-level Windows mouse and keyboard hooks and the mouse output;
+- the Lua engine and the script API, modelled on Logitech G Hub scripts;
+- the profile storage, with import and export;
+- the Lua recoil scripts, ported from a G Hub script;
+- the unit tests;
+- this README.
+
+The author's part was the idea, the requirements, testing it in game, tuning the values, and deciding what to keep.
+
+### What this means for you
+
+- **It works, but it was not reviewed line by line by a human developer.** Expect rough edges, and report bugs in the [issues](https://github.com/phancongphung1309/marco-pubg/issues).
+- **The recoil patterns may not match your mouse sensitivity or scope.** Tune them in `Scripts/auto.lua`, or make your own pull-down with a Movement profile.
+- **Read the code before you trust it**, as with any tool that runs as administrator and hooks your mouse and keyboard. It is all here, and it is short.
+
+It is also an example of what vibe coding can build today: a working Windows desktop app with native hooks, a scripting engine and tests, made without writing code by hand.
+
+## Support
+
+If the app helps you, you can support the author: click **Donate** in the app to show the QR code (VietQR / Napas 247).
