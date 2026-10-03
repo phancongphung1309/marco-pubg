@@ -8,13 +8,13 @@ Most recoil macros are Lua scripts for Logitech G Hub, so they only work with a 
 
 It does not read or change the game: it only moves the cursor, like a G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned. G Hub scripts port over easily, since the script functions have the same names (`MoveMouseRelative`, `IsMouseButtonPressed`, `Sleep`, …).
 
-> For Movement mode, the mouse needs a Forward side button (most gaming mice have one). Auto mode only uses the left and right buttons, so it works with any mouse.
+> The mouse needs a Forward side button (most gaming mice have one): both Auto and Movement are triggered by it.
 
 ### Two modes
 
 Chosen per profile:
 
-- **Auto** (recommended for PUBG): hold **RIGHT** to aim down sights, then **LEFT** to fire. The cursor is pulled down following a recoil pattern made for the selected gun, **M416** or **Beryl M762**, until you stop firing. Press **F1** in game to switch gun.
+- **Auto** (recommended for PUBG): hold the **Forward** side mouse button to fire. The cursor is pulled down following a recoil pattern made for the selected gun, **M416** or **Beryl M762**, until you release Forward. Press **F1** in game to switch gun.
 - **Movement**: your own pull-down. Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
 
 ### Why Auto is recommended
@@ -25,12 +25,12 @@ Auto is the mode to use in PUBG. Start with it, and only try Movement if you wan
 | --- | --- | --- |
 | Setup | None: pick the gun and play | You find the right values by trial and error |
 | Pull-down | Follows the gun's real recoil: softer on the first shots, stronger as the spray goes on | The same step all the time |
-| Fire button | Your normal LEFT button | The Forward side button |
-| When it acts | Only while you aim (RIGHT) and fire (LEFT): hip fire and the menus are left alone | Every time Forward is held |
-| Stops | As soon as you release LEFT | After a set time, then fires again while Forward is held |
+| Fire button | The Forward side button | The Forward side button |
+| When it acts | Every time Forward is held: your normal LEFT clicks are left alone | Every time Forward is held |
+| Stops | As soon as you release Forward | After a set time, then fires again while Forward is held |
 | Switch gun | **F1** in game | **F1 to F12**, one profile per setting |
 
-In short: Auto feels like your own hands, only steadier. You aim and fire as usual, and the pull-down follows the gun.
+In short: Auto follows the real recoil pattern of the gun, Movement is a fixed pull-down you tune yourself.
 
 > **Warning:** using macros or recoil scripts is against the PUBG terms of service. Your account can be banned. Use at your own risk.
 
@@ -44,7 +44,7 @@ In short: Auto feels like your own hands, only steadier. You aim and fire as usu
 2. Extract it anywhere, for example to your Desktop. Keep all the files together: `MouseStudio.exe` needs the `Scripts` folder next to it.
 3. Open the `Marco-Pubg` folder and double-click **`MouseStudio.exe`**.
 4. Click **Yes** when Windows asks for administrator rights.
-5. Click the **Auto** card, pick your gun (**M416** or **Beryl**), and start the game. Aim with RIGHT, fire with LEFT.
+5. Click the **Auto** card, pick your gun (**M416** or **Beryl**), and start the game. Hold Forward to fire.
 
 If Windows shows "Windows protected your PC", click **More info**, then **Run anyway**. The app is not signed, so Windows warns about it.
 
@@ -97,7 +97,7 @@ On first start the app creates one profile, **Default**, in Movement mode. The s
 
 Click one of the two cards at the top:
 
-- **Auto** (recommended): pulls the cursor down while you aim and fire.
+- **Auto** (recommended): fires and pulls the cursor down while you hold the Forward side button.
 - **Movement**: drags the cursor while you hold the Forward side button.
 
 The app starts in Movement, so **click Auto** the first time. The choice is saved, so the app opens in Auto from then on. The matching script starts right away: there is no Start button, the script runs as long as the app is open.
@@ -105,13 +105,13 @@ The app starts in Movement, so **click Auto** the first time. The choice is save
 ### 3. Use Auto (recommended)
 
 1. Click the **Auto** card, then pick the gun: **M416** or **Beryl**.
-2. In game, **hold RIGHT** to aim, then **hold LEFT** to fire. The cursor is pulled down following the recoil pattern of the selected gun, until LEFT is released.
+2. In game, **hold Forward** (button 5, the front thumb button). The app holds LEFT down for you and pulls the cursor down following the recoil pattern of the selected gun, until Forward is released.
 3. Press **F1** to switch between M416 and Beryl without leaving the game. The overlay shows the gun in use.
 
 Tips:
 
-- **Aim first, then fire.** The pull-down only starts when LEFT is pressed while RIGHT is already held. Hip fire, single taps without aiming, and clicks in menus are never pulled.
-- **Hold LEFT for full sprays.** The pattern follows the whole magazine: light at first, then stronger. Releasing LEFT stops it at once, and the next burst starts from the beginning of the pattern.
+- **Only Forward triggers it.** Normal LEFT clicks (single taps, menus) are never pulled. Aim with RIGHT as usual if you want to fire down sights.
+- **Hold Forward for full sprays.** The pattern follows the whole magazine: light at first, then stronger. Releasing Forward stops it at once, and the next burst starts from the beginning of the pattern.
 - **Press F1 when you swap guns in game**, so the pattern matches the gun in your hands. Show the overlay to see which one is active without alt-tabbing.
 - **Other guns**: pick the pattern closest to your gun. The M416 pattern suits lighter 5.56 rifles, the Beryl pattern stronger-kicking 7.62 rifles.
 - **Pulling too much or too little?** Your sensitivity or scope may differ from the one the patterns were made for. Change the numbers at the top of `Scripts/auto.lua` (bigger numbers pull harder) and restart the app.

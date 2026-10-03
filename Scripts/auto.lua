@@ -1,7 +1,7 @@
 -- Port of test_1.lua (Logitech G Hub) to Mouse Studio.
 --
--- Hold RIGHT (aim), then hold LEFT (fire): the cursor is pulled down
--- following the table of the selected gun until LEFT is released.
+-- Hold FORWARD: LEFT (fire) is held for you and the cursor is pulled
+-- down following the table of the selected gun until FORWARD is released.
 --
 -- Mouse Studio sets GUN_MODE ("m416" or "beryl") from the "Auto"
 -- settings of the profile. It is read on each shot.
@@ -10,7 +10,7 @@ GUN_MODE = GUN_MODE or "m416"
 
 
 local LEFT_BUTTON = 1
-local RIGHT_BUTTON = 2
+local FORWARD_BUTTON = 5
 
 local STEPS = 80
 local MOVES_PER_STEP = 4
@@ -67,8 +67,7 @@ function OnEvent(event, arg)
 
 
     if event == "MOUSE_BUTTON_PRESSED"
-        and arg == LEFT_BUTTON
-        and IsMouseButtonPressed(RIGHT_BUTTON) then
+        and arg == FORWARD_BUTTON then
 
         local recoil = getRecoilTable()
 
@@ -84,7 +83,11 @@ function OnEvent(event, arg)
 
         local step = 1
 
-        while IsMouseButtonPressed(LEFT_BUTTON) do
+        PressMouseButton(
+            LEFT_BUTTON
+        )
+
+        while IsMouseButtonPressed(FORWARD_BUTTON) do
 
             for _ = 1, MOVES_PER_STEP do
 
@@ -106,6 +109,11 @@ function OnEvent(event, arg)
             end
 
         end
+
+
+        ReleaseMouseButton(
+            LEFT_BUTTON
+        )
 
     end
 

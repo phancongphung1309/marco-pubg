@@ -189,7 +189,7 @@
                             FontWeight="SemiBold"/>
 
                         <TextBlock
-                            Text="Hold RIGHT to aim, then LEFT: pulls down automatically."
+                            Text="Hold Forward: fires and pulls down automatically."
                             FontSize="12"
                             Foreground="{StaticResource MutedBrush}"
                             TextWrapping="Wrap"
@@ -573,7 +573,7 @@
                                 Margin="0,0,10,0"/>
 
                             <TextBlock
-                                Text="Hold RIGHT mouse button to aim, then hold LEFT: the cursor is pulled down until LEFT is released."
+                                Text="Hold the Forward side button: LEFT is held for you and the cursor is pulled down until Forward is released."
                                 FontSize="12"
                                 Foreground="#C9D2DD"
                                 TextWrapping="Wrap"
