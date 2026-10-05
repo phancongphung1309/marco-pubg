@@ -24,7 +24,7 @@ Giữ phím kích hoạt (mặc định là nút bên **Forward** của chuột,
 
 ## Bắt đầu nhanh (không cần cài đặt)
 
-1. Tải [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/raw/main/Marco-Pubg.zip).
+1. Tải [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/releases/tag/v1.0.0).
 2. Giải nén ở bất kỳ đâu, ví dụ ra Desktop. Giữ tất cả các tệp cùng nhau: `MouseStudio.exe` cần thư mục `Scripts` nằm cạnh nó.
 3. Mở thư mục `Marco-Pubg` và nhấp đúp **`MouseStudio.exe`**.
 4. Bấm **Yes** khi Windows hỏi quyền quản trị (administrator).

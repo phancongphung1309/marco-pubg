@@ -24,7 +24,7 @@ Hold the trigger (the **Forward** side mouse button by default, or a key or comb
 
 ## Quick start (no install)
 
-1. Download [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/raw/main/Marco-Pubg.zip).
+1. Download [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/releases/tag/v1.0.0).
 2. Extract it anywhere, for example to your Desktop. Keep all the files together: `MouseStudio.exe` needs the `Scripts` folder next to it.
 3. Open the `Marco-Pubg` folder and double-click **`MouseStudio.exe`**.
 4. Click **Yes** when Windows asks for administrator rights.
