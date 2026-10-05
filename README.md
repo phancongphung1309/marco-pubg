@@ -168,6 +168,8 @@ Các hồ sơ mặc định (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) được 
   | Độ Nhạy cho tất cả các loại Scope (Universal Sensitivity for All Scopes) | Bật |
   | Độ nhạy Nòng nhắm (Scoping Sensitivity) | 45 |
 
+![Cài đặt chuột PUBG: Độ nhạy chung, Nhắm và Nòng nhắm 45, Hệ số nhạy dọc 1, bật Độ Nhạy cho tất cả các loại Scope](configure_vi.png)
+
 Game dùng cùng tên "Độ nhạy Nhắm" cho cả Aim và ADS; trong menu, Aim nằm trên ADS. Khi bật **Độ Nhạy cho tất cả các loại Scope**, mọi ống ngắm dùng chung một Độ nhạy Nòng nhắm, nên một hồ sơ hoạt động giống nhau với mọi ống ngắm.
 
 ### Khắc phục sự cố

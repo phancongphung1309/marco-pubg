@@ -168,6 +168,8 @@ The default profiles (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) were tuned in ga
   | Universal Sensitivity for All Scopes | Enable |
   | Scoping Sensitivity | 45 |
 
+![PUBG mouse settings: General, Aim, ADS and Scoping Sensitivity 45, Vertical Sensitivity Multiplier 1, Universal Sensitivity for All Scopes enabled](configure_en.png)
+
 With **Universal Sensitivity for All Scopes** enabled, every scope uses the same Scoping Sensitivity, so one profile behaves the same across scopes.
 
 ### Troubleshooting
