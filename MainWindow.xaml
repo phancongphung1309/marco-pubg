@@ -18,8 +18,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="22"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="12"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="18"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -91,128 +89,15 @@
         </Grid>
 
 
-        <!-- ===== Feature selector ===== -->
+        <!-- ===== Settings ===== -->
         <Grid Grid.Row="2">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="14"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <RadioButton
-                x:Name="MovementFeatureButton"
-                Grid.Column="0"
-                GroupName="Feature"
-                Style="{StaticResource FeatureCard}"
-                Checked="Feature_Checked">
-
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border
-                        Width="44"
-                        Height="44"
-                        CornerRadius="10"
-                        Background="#1B2A40"
-                        Margin="0,0,14,0"
-                        VerticalAlignment="Center">
-                        <TextBlock
-                            Text="&#xE7C2;"
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="20"
-                            Foreground="{StaticResource PrimaryBrush}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-                    </Border>
-
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-
-                        <TextBlock
-                            Text="Movement"
-                            FontSize="17"
-                            FontWeight="SemiBold"/>
-
-                        <TextBlock
-                            Text="Hold the Forward side button to drag the cursor."
-                            FontSize="12"
-                            Foreground="{StaticResource MutedBrush}"
-                            TextWrapping="Wrap"
-                            Margin="0,3,0,0"/>
-
-                    </StackPanel>
-
-                </Grid>
-
-            </RadioButton>
-
-
-            <RadioButton
-                x:Name="AutoFeatureButton"
-                Grid.Column="2"
-                GroupName="Feature"
-                Style="{StaticResource FeatureCard}"
-                Checked="Feature_Checked">
-
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border
-                        Width="44"
-                        Height="44"
-                        CornerRadius="10"
-                        Background="#1B2A40"
-                        Margin="0,0,14,0"
-                        VerticalAlignment="Center">
-                        <TextBlock
-                            Text="&#xE945;"
-                            FontFamily="Segoe MDL2 Assets"
-                            FontSize="20"
-                            Foreground="{StaticResource PrimaryBrush}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
-                    </Border>
-
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-
-                        <TextBlock
-                            Text="Auto"
-                            FontSize="17"
-                            FontWeight="SemiBold"/>
-
-                        <TextBlock
-                            Text="Hold Forward: fires and pulls down automatically."
-                            FontSize="12"
-                            Foreground="{StaticResource MutedBrush}"
-                            TextWrapping="Wrap"
-                            Margin="0,3,0,0"/>
-
-                    </StackPanel>
-
-                </Grid>
-
-            </RadioButton>
-
-        </Grid>
-
-
-        <!-- ===== Feature settings ===== -->
-        <Grid Grid.Row="4">
 
             <!-- Movement settings -->
             <Border x:Name="MovementPanel" Style="{StaticResource Card}" Padding="20">
 
             <StackPanel>
 
-                <!-- Profile (Movement only) -->
+                <!-- Profile -->
                 <Grid>
 
                     <Grid.RowDefinitions>
@@ -465,133 +350,11 @@
 
             </Border>
 
-
-            <!-- Auto settings -->
-            <Border
-                x:Name="AutoPanel"
-                Style="{StaticResource Card}"
-                Padding="20"
-                Visibility="Collapsed">
-
-                <Grid>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel>
-
-                        <TextBlock
-                            Text="Auto settings"
-                            FontSize="17"
-                            FontWeight="SemiBold"/>
-
-                        <TextBlock
-                            Text="Saved automatically. In Auto, F1 switches the gun"
-                            FontSize="12"
-                            Foreground="{StaticResource MutedBrush}"
-                            Margin="0,4,0,0"/>
-
-                    </StackPanel>
-
-                    <!-- Gun -->
-                    <Grid Grid.Row="2">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="64"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel VerticalAlignment="Center">
-
-                            <TextBlock
-                                Text="Gun"
-                                FontSize="15"
-                                FontWeight="SemiBold"/>
-
-                            <TextBlock
-                                Text="Which pull-down pattern to use"
-                                FontSize="12"
-                                Foreground="{StaticResource MutedBrush}"
-                                Margin="0,3,0,0"/>
-
-                        </StackPanel>
-
-                        <Border Grid.Column="1" Style="{StaticResource SegmentGroup}">
-
-                            <StackPanel Orientation="Horizontal">
-
-                                <RadioButton
-                                    x:Name="GunM416Button"
-                                    Content="M416"
-                                    GroupName="AutoGun"
-                                    Style="{StaticResource SegmentButton}"
-                                    Checked="AutoOption_Checked"/>
-
-                                <RadioButton
-                                    x:Name="GunBerylButton"
-                                    Content="Beryl"
-                                    GroupName="AutoGun"
-                                    Style="{StaticResource SegmentButton}"
-                                    Checked="AutoOption_Checked"/>
-
-                            </StackPanel>
-
-                        </Border>
-
-                        <Border
-                            Grid.Column="2"
-                            Style="{StaticResource KeyBadge}"
-                            HorizontalAlignment="Right"
-                            ToolTip="Press F1 to switch (also in game)">
-                            <TextBlock Text="F1" Style="{StaticResource KeyBadgeText}"/>
-                        </Border>
-
-                    </Grid>
-
-                    <!-- How to use -->
-                    <Border
-                        Grid.Row="4"
-                        Background="#0E151D"
-                        BorderBrush="{StaticResource BorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="14,10">
-
-                        <StackPanel Orientation="Horizontal">
-
-                            <TextBlock
-                                Text="&#xE946;"
-                                FontFamily="Segoe MDL2 Assets"
-                                Foreground="{StaticResource PrimaryBrush}"
-                                VerticalAlignment="Center"
-                                Margin="0,0,10,0"/>
-
-                            <TextBlock
-                                Text="Hold the Forward side button: LEFT is held for you and the cursor is pulled down until Forward is released."
-                                FontSize="12"
-                                Foreground="#C9D2DD"
-                                TextWrapping="Wrap"
-                                VerticalAlignment="Center"/>
-
-                        </StackPanel>
-
-                    </Border>
-
-                </Grid>
-
-            </Border>
-
         </Grid>
 
 
         <!-- ===== Console ===== -->
-        <Border Grid.Row="6" Style="{StaticResource Card}" Padding="16">
+        <Border Grid.Row="4" Style="{StaticResource Card}" Padding="16">
 
             <Grid>
 

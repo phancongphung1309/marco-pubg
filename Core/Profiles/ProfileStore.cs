@@ -19,7 +19,7 @@ public class ProfileStore
         _filePath = filePath;
     }
 
-    // Never fails: a missing or unreadable file yields a single default profile.
+    // Never fails: a missing or unreadable file yields the default profiles.
     // `error` is set only when an existing file could not be read.
     public ProfileData Load(out string? error)
     {
@@ -46,20 +46,7 @@ public class ProfileStore
 
         if (data.Profiles.Count == 0)
         {
-            data.Profiles.Add(MovementProfile.CreateDefault());
-        }
-
-        foreach (var profile in data.Profiles)
-        {
-            if (!Enum.IsDefined(profile.Feature))
-            {
-                profile.Feature = ProfileFeature.Movement;
-            }
-
-            if (!Enum.IsDefined(profile.AutoGun))
-            {
-                profile.AutoGun = AutoGun.M416;
-            }
+            data.Profiles.AddRange(MovementProfile.CreateDefaults());
         }
 
         data.SelectedProfile =
@@ -151,11 +138,6 @@ public class ProfileStore
             }
 
             if (profile.Interval < 1 || profile.ActiveDuration < 1 || profile.RepeatDelay < 0)
-            {
-                return $"Profile \"{profile.Name}\" has invalid values.";
-            }
-
-            if (!Enum.IsDefined(profile.Feature) || !Enum.IsDefined(profile.AutoGun))
             {
                 return $"Profile \"{profile.Name}\" has invalid values.";
             }

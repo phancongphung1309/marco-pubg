@@ -24,14 +24,14 @@
 
         <StackPanel>
 
-            <!-- "Mode: Auto - Beryl" or "Mode: Movement" -->
+            <!-- "Mode: Movement" -->
             <TextBlock
                 x:Name="ModeText"
                 FontSize="15"
                 FontWeight="SemiBold"
                 Foreground="#F3F4F6"/>
 
-            <!-- "Profile XXX"; Movement only -->
+            <!-- "Profile XXX" -->
             <TextBlock
                 x:Name="ProfileText"
                 FontSize="13"

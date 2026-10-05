@@ -21,21 +21,21 @@ public class ProfileStoreTests : IDisposable
     }
 
     [Fact]
-    public void Load_MissingFile_ReturnsSingleDefaultProfile()
+    public void Load_MissingFile_ReturnsDefaultProfiles()
     {
         var store = new ProfileStore(FilePath);
 
         var data = store.Load(out var error);
 
         Assert.Null(error);
-        var profile = Assert.Single(data.Profiles);
-        Assert.Equal("Default", profile.Name);
+        Assert.Equal(new[] { "F1 - 5mm", "F2 - 7mm", "F3 - RPD" }, data.Profiles.Select(p => p.Name));
+        var profile = data.Profiles[0];
         Assert.Equal(0, profile.MoveX);
-        Assert.Equal(5, profile.MoveY);
-        Assert.Equal(10, profile.Interval);
-        Assert.Equal(5000, profile.ActiveDuration);
-        Assert.Equal(1000, profile.RepeatDelay);
-        Assert.Equal("Default", data.SelectedProfile);
+        Assert.Equal(6, profile.MoveY);
+        Assert.Equal(5, profile.Interval);
+        Assert.Equal(50000, profile.ActiveDuration);
+        Assert.Equal(50, profile.RepeatDelay);
+        Assert.Equal("F1 - 5mm", data.SelectedProfile);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class ProfileStoreTests : IDisposable
         var data = store.Load(out var error);
 
         Assert.NotNull(error);
-        Assert.Equal("Default", Assert.Single(data.Profiles).Name);
+        Assert.Equal(3, data.Profiles.Count);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ProfileStoreTests : IDisposable
 
         var data = store.Load(out _);
 
-        Assert.Equal("Default", Assert.Single(data.Profiles).Name);
+        Assert.Equal(3, data.Profiles.Count);
     }
 
     [Fact]
@@ -136,8 +136,6 @@ public class ProfileStoreTests : IDisposable
     [InlineData("""{ "Profiles": [ { "Name": "" , "Interval": 1, "ActiveDuration": 1 } ] }""")]
     [InlineData("""{ "Profiles": [ { "Name": "A", "Interval": 1, "ActiveDuration": 1 }, { "Name": "a", "Interval": 1, "ActiveDuration": 1 } ] }""")]
     [InlineData("""{ "Profiles": [ { "Name": "A", "Interval": 0, "ActiveDuration": 1 } ] }""")]
-    [InlineData("""{ "Profiles": [ { "Name": "A", "Interval": 1, "ActiveDuration": 1, "Feature": "Jump" } ] }""")]
-    [InlineData("""{ "Profiles": [ { "Name": "A", "Interval": 1, "ActiveDuration": 1, "AutoGun": 7 } ] }""")]
     public void Import_InvalidFile_IsRejected(string json)
     {
         File.WriteAllText(FilePath, json);
@@ -173,44 +171,14 @@ public class ProfileStoreTests : IDisposable
     }
 
     [Fact]
-    public void Load_OlderProfile_IsMovementWithAutoDefaults()
+    public void Load_FileFromAutoModeVersion_IgnoresAutoFields()
     {
-        File.WriteAllText(FilePath, """{ "Profiles": [ { "Name": "Old", "Interval": 10, "ActiveDuration": 5000 } ] }""");
+        File.WriteAllText(FilePath, """{ "Profiles": [ { "Name": "Old", "Feature": "Auto", "AutoGun": "Beryl", "MoveY": 6, "Interval": 10, "ActiveDuration": 5000 } ] }""");
 
         var profile = Assert.Single(new ProfileStore(FilePath).Load(out var error).Profiles);
 
         Assert.Null(error);
-        Assert.Equal(ProfileFeature.Movement, profile.Feature);
-        Assert.Equal(AutoGun.M416, profile.AutoGun);
-    }
-
-    [Fact]
-    public void Save_ThenLoad_RoundTripsFeatureAndGun()
-    {
-        var store = new ProfileStore(FilePath);
-
-        store.Save(new ProfileData
-        {
-            Profiles =
-            {
-                new MovementProfile
-                {
-                    Name = "A",
-                    Feature = ProfileFeature.Auto,
-                    AutoGun = AutoGun.Beryl,
-                    Interval = 10,
-                    ActiveDuration = 5000
-                }
-            }
-        });
-
-        Assert.Contains("\"Auto\"", File.ReadAllText(FilePath));
-
-        var profile = Assert.Single(store.Load(out _).Profiles);
-
-        Assert.Equal(ProfileFeature.Auto, profile.Feature);
-        Assert.Equal(AutoGun.Beryl, profile.AutoGun);
-        Assert.Equal("beryl", profile.GetLuaGlobals()["GUN_MODE"]);
-        Assert.Equal("auto.lua", profile.GetScriptFileName());
+        Assert.Equal(("Old", 6.0, 10), (profile.Name, profile.MoveY, profile.Interval));
+        Assert.DoesNotContain("GUN_MODE", profile.GetLuaGlobals().Keys);
     }
 }

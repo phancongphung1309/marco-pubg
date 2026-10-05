@@ -132,34 +132,6 @@ public class LuaEngine : IDisposable
         lua.RegisterFunction("IsKeyLockOn", api, type.GetMethod(nameof(LuaApi.IsKeyLockOn)));
     }
 
-    // Changes globals of the running script without restarting it.
-    // Queued like events, so a script busy in OnEvent (e.g. while firing)
-    // sees the new values once that call returns.
-    public void SetGlobals(
-        IReadOnlyDictionary<string, object> globals
-    )
-    {
-        var session = _active;
-
-        if (session == null)
-        {
-            return;
-        }
-
-        Enqueue(() =>
-        {
-            if (_loaded != session || session.Cancellation.IsCancellationRequested)
-            {
-                return;
-            }
-
-            foreach (var (name, value) in globals)
-            {
-                session.Lua[name] = value;
-            }
-        });
-    }
-
     // Safe to call from any thread: the event is queued for the worker.
     public void Dispatch(
         string eventName,

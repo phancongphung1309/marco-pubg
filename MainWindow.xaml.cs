@@ -124,8 +124,6 @@ public partial class MainWindow : Window
 
     // Virtual-key codes of the profile hotkeys: F1 loads the first
     // profile in the list, F2 the second, ... F12 the twelfth.
-    // While an Auto profile is selected, F1 switches its gun instead
-    // and F2 to F12 do nothing.
     private const int VK_F1 = 0x70;
     private const int ProfileHotkeyCount = ProfileData.MaxProfiles;
 
@@ -137,14 +135,7 @@ public partial class MainWindow : Window
 
         if (index >= 0 && index < ProfileHotkeyCount)
         {
-            if (SelectedProfile.Feature != ProfileFeature.Auto)
-            {
-                Dispatcher.BeginInvoke(() => LoadProfileByHotkey(index));
-            }
-            else if (index == 0)
-            {
-                Dispatcher.BeginInvoke(ToggleGunByHotkey);
-            }
+            Dispatcher.BeginInvoke(() => LoadProfileByHotkey(index));
 
             return;
         }
@@ -255,122 +246,8 @@ public partial class MainWindow : Window
         ActiveDurationTextBox.Text = profile.ActiveDuration.ToString();
         RepeatDelayTextBox.Text = profile.RepeatDelay.ToString();
 
-        MovementFeatureButton.IsChecked = profile.Feature == ProfileFeature.Movement;
-        AutoFeatureButton.IsChecked = profile.Feature == ProfileFeature.Auto;
-
-        GunM416Button.IsChecked = profile.AutoGun == AutoGun.M416;
-        GunBerylButton.IsChecked = profile.AutoGun == AutoGun.Beryl;
-
-        MovementPanel.Visibility =
-            profile.Feature == ProfileFeature.Movement ? Visibility.Visible : Visibility.Collapsed;
-        AutoPanel.Visibility =
-            profile.Feature == ProfileFeature.Auto ? Visibility.Visible : Visibility.Collapsed;
-
         _showingProfile = false;
     }
-
-    // ===== Feature =====
-
-    private void Feature_Checked(
-        object sender,
-        RoutedEventArgs e
-    )
-    {
-        if (_showingProfile)
-        {
-            return;
-        }
-
-        var feature = sender == AutoFeatureButton
-            ? ProfileFeature.Auto
-            : ProfileFeature.Movement;
-
-        var profile = SelectedProfile;
-
-        if (profile.Feature == feature)
-        {
-            return;
-        }
-
-        // Keep movement edits typed just before switching.
-        FlushAutoSave();
-
-        profile.Feature = feature;
-
-        ShowProfile(profile);
-
-        UpdateOverlay();
-
-        SaveProfiles();
-
-        Log(
-            $"Profile {profile.Name}: {feature}"
-        );
-
-        StartScript(profile);
-    }
-
-    // ===== Auto =====
-
-    private void AutoOption_Checked(
-        object sender,
-        RoutedEventArgs e
-    )
-    {
-        if (_showingProfile)
-        {
-            return;
-        }
-
-        var profile = SelectedProfile;
-
-        profile.AutoGun = sender == GunBerylButton
-            ? AutoGun.Beryl
-            : AutoGun.M416;
-
-        ApplyAutoSettings(profile);
-    }
-
-    // F1 on an Auto profile: M416 <-> Beryl.
-    private void ToggleGunByHotkey()
-    {
-        var profile = SelectedProfile;
-
-        // The profile may have changed since the key was pressed.
-        if (profile.Feature != ProfileFeature.Auto)
-        {
-            return;
-        }
-
-        profile.AutoGun =
-            profile.AutoGun == AutoGun.M416 ? AutoGun.Beryl : AutoGun.M416;
-
-        ShowProfile(profile);
-
-        ApplyAutoSettings(profile);
-    }
-
-    // Saves the Auto settings and hands them to the running script
-    // without restarting it.
-    private void ApplyAutoSettings(
-        MovementProfile profile
-    )
-    {
-        SaveProfiles();
-
-        UpdateOverlay();
-
-        _luaEngine.SetGlobals(profile.GetLuaGlobals());
-
-        Log(
-            $"Profile {profile.Name}: {DescribeAuto(profile)}"
-        );
-    }
-
-    private static string DescribeAuto(
-        MovementProfile profile
-    ) =>
-        $"Auto · {profile.AutoGun}";
 
     // Makes the profile current and runs the script with its values.
     private void SelectProfile(
@@ -741,16 +618,7 @@ public partial class MainWindow : Window
 
     private void UpdateOverlay()
     {
-        var profile = SelectedProfile;
-
-        if (profile.Feature == ProfileFeature.Auto)
-        {
-            _overlay?.SetMode($"Auto - {profile.AutoGun}", null);
-        }
-        else
-        {
-            _overlay?.SetMode("Movement", profile.Name);
-        }
+        _overlay?.SetMode("Movement", SelectedProfile.Name);
     }
 
     private void HideOverlay()
@@ -833,7 +701,7 @@ public partial class MainWindow : Window
         MovementProfile config
     )
     {
-        var scriptName = config.GetScriptFileName();
+        const string scriptName = "movement.lua";
 
         var scriptPath =
             Path.Combine(ScriptsFolder, scriptName);
@@ -858,7 +726,7 @@ public partial class MainWindow : Window
             config.GetLuaGlobals()
         );
 
-        SetStatus(true, $"{config.Feature} running · {scriptName}");
+        SetStatus(true, $"Movement running · {scriptName}");
     }
 
     private void SetStatus(

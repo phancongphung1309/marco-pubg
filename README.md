@@ -8,35 +8,17 @@ Most recoil macros are Lua scripts for Logitech G Hub, so they only work with a 
 
 It does not read or change the game: it only moves the cursor, like a G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned. G Hub scripts port over easily, since the script functions have the same names (`MoveMouseRelative`, `IsMouseButtonPressed`, `Sleep`, …).
 
-> The mouse needs a Forward side button (most gaming mice have one): both Auto and Movement are triggered by it.
+> The mouse needs a Forward side button (most gaming mice have one): the pull-down is triggered by it.
 
-### Two modes
+### How it works
 
-Chosen per profile:
-
-- **Auto** (recommended for PUBG): hold the **Forward** side mouse button to fire. The cursor is pulled down following a recoil pattern made for the selected gun, **M416** or **Beryl M762**, until you release Forward. Press **F1** in game to switch gun.
-- **Movement**: your own pull-down. Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
-
-### Why Auto is recommended
-
-Auto is the mode to use in PUBG. Start with it, and only try Movement if you want to build your own pattern.
-
-| | **Auto** ✅ | Movement |
-| --- | --- | --- |
-| Setup | None: pick the gun and play | You find the right values by trial and error |
-| Pull-down | Follows the gun's real recoil: softer on the first shots, stronger as the spray goes on | The same step all the time |
-| Fire button | The Forward side button | The Forward side button |
-| When it acts | Every time Forward is held: your normal LEFT clicks are left alone | Every time Forward is held |
-| Stops | As soon as you release Forward | After a set time, then fires again while Forward is held |
-| Switch gun | **F1** in game | **F1 to F12**, one profile per setting |
-
-In short: Auto follows the real recoil pattern of the gun, Movement is a fixed pull-down you tune yourself.
+Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
 
 > **Warning:** using macros or recoil scripts is against the PUBG terms of service. Your account can be banned. Use at your own risk.
 
 > **Built 100% with AI.** Every line of code in this project was written by AI through vibe coding. See [About this project](#about-this-project).
 
-![Mouse Studio in Auto mode, with the Beryl gun selected and the script log in the console](app_screenshot.png)
+![Mouse Studio with a Movement profile selected and the script log in the console](app_screenshot.png)
 
 ## Quick start (no install)
 
@@ -44,7 +26,7 @@ In short: Auto follows the real recoil pattern of the gun, Movement is a fixed p
 2. Extract it anywhere, for example to your Desktop. Keep all the files together: `MouseStudio.exe` needs the `Scripts` folder next to it.
 3. Open the `Marco-Pubg` folder and double-click **`MouseStudio.exe`**.
 4. Click **Yes** when Windows asks for administrator rights.
-5. Click the **Auto** card, pick your gun (**M416** or **Beryl**), and start the game. Hold Forward to fire.
+5. Pick a profile (or press **F1 to F12**), and start the game. Hold Forward to fire.
 
 If Windows shows "Windows protected your PC", click **More info**, then **Run anyway**. The app is not signed, so Windows warns about it.
 
@@ -91,34 +73,9 @@ The xUnit tests cover profile data, name checks, and saving, loading, importing 
 
 Run `MouseStudio.exe` and accept the administrator prompt. Keep the `Scripts` folder next to the executable: the app runs the scripts in it.
 
-On first start the app creates one profile, **Default**, in Movement mode. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing.
+On first start the app creates three profiles: **F1 - 5mm**, **F2 - 7mm** and **F3 - RPD**. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing. There is no Start button: the script runs as long as the app is open.
 
-### 2. Choose a feature
-
-Click one of the two cards at the top:
-
-- **Auto** (recommended): fires and pulls the cursor down while you hold the Forward side button.
-- **Movement**: drags the cursor while you hold the Forward side button.
-
-The app starts in Movement, so **click Auto** the first time. The choice is saved, so the app opens in Auto from then on. The matching script starts right away: there is no Start button, the script runs as long as the app is open.
-
-### 3. Use Auto (recommended)
-
-1. Click the **Auto** card, then pick the gun: **M416** or **Beryl**.
-2. In game, **hold Forward** (button 5, the front thumb button). The app holds LEFT down for you and pulls the cursor down following the recoil pattern of the selected gun, until Forward is released.
-3. Press **F1** to switch between M416 and Beryl without leaving the game. The overlay shows the gun in use.
-
-Tips:
-
-- **Only Forward triggers it.** Normal LEFT clicks (single taps, menus) are never pulled. Aim with RIGHT as usual if you want to fire down sights.
-- **Hold Forward for full sprays.** The pattern follows the whole magazine: light at first, then stronger. Releasing Forward stops it at once, and the next burst starts from the beginning of the pattern.
-- **Press F1 when you swap guns in game**, so the pattern matches the gun in your hands. Show the overlay to see which one is active without alt-tabbing.
-- **Other guns**: pick the pattern closest to your gun. The M416 pattern suits lighter 5.56 rifles, the Beryl pattern stronger-kicking 7.62 rifles.
-- **Pulling too much or too little?** Your sensitivity or scope may differ from the one the patterns were made for. Change the numbers at the top of `Scripts/auto.lua` (bigger numbers pull harder) and restart the app.
-
-While Auto is selected, F2 to F12 do nothing and the profile list is hidden. To use profiles, click **Movement** first.
-
-### 4. Use Movement
+### 2. Use Movement
 
 1. Set the values in the Movement panel:
 
@@ -139,9 +96,9 @@ While Auto is selected, F2 to F12 do nothing and the profile list is hidden. To 
 
 3. **Release Forward** to stop at once. The left button is released too.
 
-### 5. Manage Movement profiles
+### 3. Manage profiles
 
-Profiles let you keep several sets of Movement values and switch between them quickly. They are in the Movement panel:
+Profiles let you keep several sets of Movement values and switch between them quickly. They are at the top of the settings panel:
 
 - **New**: add a profile (up to 12). It starts with default values.
 - **Rename**: change the name of the selected profile. Names must be unique.
@@ -156,11 +113,11 @@ To back up profiles or move them to another PC:
 
 Profiles are stored in `profiles.json` next to the executable.
 
-### 6. Play with the overlay
+### 4. Play with the overlay
 
 Click **Show Overlay** before starting the game:
 
-- A small always-on-top box shows the current mode (and the profile, or the gun in Auto).
+- A small always-on-top box shows the current profile.
 - The main window is hidden to the notification area (tray).
 - Drag the box with the left button to move it. Its position is remembered.
 - Double-click the box, or click the tray icon, to bring the main window back.
@@ -185,7 +142,7 @@ A script defines `OnEvent(event, arg)`, which Mouse Studio calls with:
 | `MOUSE_BUTTON_PRESSED` / `MOUSE_BUTTON_RELEASED` | The button: 1 left, 2 right, 4 back, 5 forward |
 | `KEY_PRESSED` | The virtual-key code (F1 to F12 are kept for profile hotkeys) |
 
-The profile's settings are set as globals before the script runs: `MOVE_X`, `MOVE_Y`, `INTERVAL`, `ACTIVE_DURATION`, `REPEAT_DELAY` and `GUN_MODE` (`"m416"` or `"beryl"`).
+The profile's settings are set as globals before the script runs: `MOVE_X`, `MOVE_Y`, `INTERVAL`, `ACTIVE_DURATION`, and `REPEAT_DELAY`.
 
 Functions available to scripts (`Core/Lua/LuaApi.cs`):
 
@@ -200,12 +157,12 @@ Functions available to scripts (`Core/Lua/LuaApi.cs`):
 | `GetTickCount()` | Milliseconds since Windows started |
 | `OutputLogMessage(text)` | Write to the app console |
 
-`movement.lua` runs Movement profiles and `auto.lua` runs Auto profiles. The recoil tables are at the top of `auto.lua`.
+The app runs `Scripts/movement.lua`.
 
 ## Project layout
 
 ```
-MainWindow.xaml(.cs)       Main window: profiles, features, console
+MainWindow.xaml(.cs)       Main window: profiles, settings, console
 OverlayWindow.xaml(.cs)    Always-on-top status overlay
 ProfileNameDialog.xaml     New / rename profile dialog
 DonateWindow.xaml(.cs)     Donation QR code window
@@ -226,7 +183,7 @@ The AI wrote all of it:
 - the low-level Windows mouse and keyboard hooks and the mouse output;
 - the Lua engine and the script API, modelled on Logitech G Hub scripts;
 - the profile storage, with import and export;
-- the Lua recoil scripts, ported from a G Hub script;
+- the Lua pull-down script;
 - the unit tests;
 - this README.
 
@@ -235,7 +192,7 @@ The author's part was the idea, the requirements, testing it in game, tuning the
 ### What this means for you
 
 - **It works, but it was not reviewed line by line by a human developer.** Expect rough edges, and report bugs in the [issues](https://github.com/phancongphung1309/marco-pubg/issues).
-- **The recoil patterns may not match your mouse sensitivity or scope.** Tune them in `Scripts/auto.lua`, or make your own pull-down with a Movement profile.
+- **The default profiles may not match your mouse sensitivity or scope.** Tune the values, or make your own profiles.
 - **Read the code before you trust it**, as with any tool that runs as administrator and hooks your mouse and keyboard. It is all here, and it is short.
 
 It is also an example of what vibe coding can build today: a working Windows desktop app with native hooks, a scripting engine and tests, made without writing code by hand.
