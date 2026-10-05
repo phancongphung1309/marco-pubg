@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using MouseStudio.Core.Localization;
 
 namespace MouseStudio.Core.Profiles;
 
@@ -38,7 +39,7 @@ public class ProfileStore
             }
             catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
             {
-                error = $"Could not read {_filePath}: {ex.Message}";
+                error = Loc.T("ErrReadFile", _filePath, ex.Message);
             }
         }
 
@@ -66,7 +67,7 @@ public class ProfileStore
     }
 
     // Writes every profile and the selection to a file the user picked.
-    // App settings such as the overlay position are left out.
+    // App settings such as the overlay position and language are left out.
     public static void Export(ProfileData data, string filePath)
     {
         new ProfileStore(filePath).Save(new ProfileData
@@ -92,7 +93,7 @@ public class ProfileStore
         }
         catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
         {
-            error = $"Could not read {filePath}: {ex.Message}";
+            error = Loc.T("ErrReadFile", filePath, ex.Message);
             return null;
         }
 
@@ -115,12 +116,12 @@ public class ProfileStore
     {
         if (data == null || data.Profiles == null || data.Profiles.Count == 0)
         {
-            return "The file contains no profiles.";
+            return Loc.T("ErrNoProfiles");
         }
 
         if (data.Profiles.Count > ProfileData.MaxProfiles)
         {
-            return $"The file contains {data.Profiles.Count} profiles; the maximum is {ProfileData.MaxProfiles}.";
+            return Loc.T("ErrTooManyProfiles", data.Profiles.Count, ProfileData.MaxProfiles);
         }
 
         var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -129,17 +130,17 @@ public class ProfileStore
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Name))
             {
-                return "The file contains a profile without a name.";
+                return Loc.T("ErrUnnamedProfile");
             }
 
             if (!names.Add(profile.Name.Trim()))
             {
-                return $"The file contains two profiles named \"{profile.Name}\".";
+                return Loc.T("ErrDuplicateProfile", profile.Name);
             }
 
             if (profile.Interval < 1 || profile.ActiveDuration < 1 || profile.RepeatDelay < 0)
             {
-                return $"Profile \"{profile.Name}\" has invalid values.";
+                return Loc.T("ErrInvalidValues", profile.Name);
             }
         }
 

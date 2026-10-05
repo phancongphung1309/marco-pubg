@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using MouseStudio.Core.Localization;
 
 namespace MouseStudio;
 
@@ -43,9 +44,9 @@ public partial class OverlayWindow : Window
     // `profileName` is shown on a second line; null hides that line.
     public void SetMode(string mode, string? profileName)
     {
-        ModeText.Text = $"Mode: {mode}";
+        ModeText.Text = Loc.T("OverlayMode", mode);
 
-        ProfileText.Text = $"Profile {profileName}";
+        ProfileText.Text = Loc.T("OverlayProfile", profileName);
 
         ProfileText.Visibility =
             profileName == null ? Visibility.Collapsed : Visibility.Visible;

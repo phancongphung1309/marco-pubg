@@ -1,5 +1,7 @@
 # Mouse Studio
 
+**English** | [Tiếng Việt](README.vi.md)
+
 A recoil-reduction tool for **PUBG: Battlegrounds** on Windows. While you fire, it pulls the mouse down to counter the gun's vertical recoil, so your aim stays on target without dragging the mouse yourself.
 
 ### No Logitech mouse? Don't worry, use this app.
@@ -74,6 +76,8 @@ The xUnit tests cover profile data, name checks, and saving, loading, importing 
 Run `MouseStudio.exe` and accept the administrator prompt. Keep the `Scripts` folder next to the executable: the app runs the scripts in it.
 
 On first start the app creates three profiles: **F1 - 5mm**, **F2 - 7mm** and **F3 - RPD**. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing. There is no Start button: the script runs as long as the app is open.
+
+The app starts in English. Click the **EN / VI** button next to **Donate** to switch between English and Vietnamese; the choice is saved in `profiles.json`.
 
 ### 2. Use Movement
 
@@ -169,6 +173,7 @@ DonateWindow.xaml(.cs)     Donation QR code window
 Core/Input/                Global mouse and keyboard hooks, mouse output
 Core/Lua/                  Lua engine (NLua) and the script API
 Core/Profiles/             Profile model and profiles.json storage
+Core/Localization/         English and Vietnamese UI texts
 Scripts/                   Lua scripts copied next to the executable
 tests/MouseStudio.Tests/   xUnit tests
 ```
@@ -183,6 +188,7 @@ The AI wrote all of it:
 - the low-level Windows mouse and keyboard hooks and the mouse output;
 - the Lua engine and the script API, modelled on Logitech G Hub scripts;
 - the profile storage, with import and export;
+- the English and Vietnamese UI;
 - the Lua pull-down script;
 - the unit tests;
 - this README.

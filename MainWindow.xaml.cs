@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using System.IO;
 using MouseStudio.Core.Lua;
 using MouseStudio.Core.Input;
+using MouseStudio.Core.Localization;
 using MouseStudio.Core.Profiles;
 namespace MouseStudio;
 
@@ -39,6 +40,9 @@ public partial class MainWindow : Window
 
     // Set while ShowProfile fills the fields, so that is not seen as an edit.
     private bool _showingProfile;
+
+    // Rebuilds the status line text, so it can follow a language change.
+    private Func<string> _statusText = () => Loc.T("StatusStopped");
 
     private static readonly string ScriptsFolder =
         Path.Combine(
@@ -101,17 +105,22 @@ public partial class MainWindow : Window
 
         _keyboardHook.Start();
 
-        Log(
-            "Mouse Studio started."
-        );
-
         _profiles =
             _profileStore.Load(out var loadError);
+
+        Loc.Instance.SetLanguage(_profiles.Language);
+
+        Loc.Instance.LanguageChanged +=
+            OnLanguageChanged;
+
+        Log(
+            Loc.T("LogStarted")
+        );
 
         if (loadError != null)
         {
             Log(
-                $"ERROR: {loadError} Starting with the default profile."
+                Loc.T("LogLoadError", loadError)
             );
         }
 
@@ -152,7 +161,7 @@ public partial class MainWindow : Window
         if (index >= _profiles.Profiles.Count)
         {
             Log(
-                $"F{index + 1}: no profile #{index + 1}."
+                Loc.T("LogNoProfile", index + 1)
             );
 
             return;
@@ -163,7 +172,7 @@ public partial class MainWindow : Window
         SelectProfile(profile);
 
         Log(
-            $"F{index + 1}: profile loaded: {profile.Name}"
+            Loc.T("LogHotkeyLoaded", index + 1, profile.Name)
         );
     }
 
@@ -198,6 +207,9 @@ public partial class MainWindow : Window
         EventArgs e
     )
     {
+        Loc.Instance.LanguageChanged -=
+            OnLanguageChanged;
+
         _overlay?.Close();
 
         // Otherwise the icon lingers in the tray until hovered.
@@ -277,7 +289,7 @@ public partial class MainWindow : Window
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Log(
-                $"ERROR: Could not save profiles: {ex.Message}"
+                Loc.T("LogSaveError", ex.Message)
             );
         }
     }
@@ -319,7 +331,7 @@ public partial class MainWindow : Window
         if (!TryReadFields(out var fields, out var error))
         {
             Log(
-                $"Not saved: {error}"
+                Loc.T("LogNotSaved", error)
             );
 
             return;
@@ -343,7 +355,7 @@ public partial class MainWindow : Window
         SaveProfiles();
 
         Log(
-            $"Profile saved: {profile.Name}"
+            Loc.T("LogSaved", profile.Name)
         );
 
         // Reload the script so the saved values take effect immediately.
@@ -367,7 +379,7 @@ public partial class MainWindow : Window
         SelectProfile(profile);
 
         Log(
-            $"Profile selected: {profile.Name}"
+            Loc.T("LogSelected", profile.Name)
         );
     }
 
@@ -383,7 +395,7 @@ public partial class MainWindow : Window
 
         var dialog = new ProfileNameDialog(
             this,
-            "New Profile",
+            Loc.T("NewProfileTitle"),
             "",
             name => _profiles.ValidateName(name)
         );
@@ -403,7 +415,7 @@ public partial class MainWindow : Window
         SelectProfile(profile);
 
         Log(
-            $"Profile created: {profile.Name}"
+            Loc.T("LogCreated", profile.Name)
         );
     }
 
@@ -416,7 +428,7 @@ public partial class MainWindow : Window
 
         var dialog = new ProfileNameDialog(
             this,
-            "Rename Profile",
+            Loc.T("RenameProfileTitle"),
             profile.Name,
             name => _profiles.ValidateName(name, renaming: profile)
         );
@@ -436,7 +448,7 @@ public partial class MainWindow : Window
         SaveProfiles();
 
         Log(
-            $"Profile renamed: {oldName} -> {profile.Name}"
+            Loc.T("LogRenamed", oldName, profile.Name)
         );
     }
 
@@ -453,7 +465,7 @@ public partial class MainWindow : Window
         }
 
         var answer = MessageBox.Show(
-            $"Delete profile \"{profile.Name}\"?",
+            Loc.T("ConfirmDelete", profile.Name),
             "Mouse Studio",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning
@@ -473,12 +485,9 @@ public partial class MainWindow : Window
         );
 
         Log(
-            $"Profile deleted: {profile.Name}"
+            Loc.T("LogDeleted", profile.Name)
         );
     }
-
-    private const string ProfileFileFilter =
-        "Mouse Studio profiles (*.json)|*.json|All files (*.*)|*.*";
 
     private void ExportProfiles_Click(
         object sender,
@@ -490,8 +499,8 @@ public partial class MainWindow : Window
 
         var dialog = new Microsoft.Win32.SaveFileDialog
         {
-            Title = "Export Profiles",
-            Filter = ProfileFileFilter,
+            Title = Loc.T("ExportTitle"),
+            Filter = Loc.T("ProfileFileFilter"),
             FileName = $"mouse-studio-profiles-{DateTime.Now:yyyy-MM-dd}.json"
         };
 
@@ -506,13 +515,13 @@ public partial class MainWindow : Window
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            MessageBox.Show($"Could not export profiles: {ex.Message}");
+            MessageBox.Show(Loc.T("ExportFailed", ex.Message));
 
             return;
         }
 
         Log(
-            $"Exported {_profiles.Profiles.Count} profile(s) to {dialog.FileName}"
+            Loc.T("LogExported", _profiles.Profiles.Count, dialog.FileName)
         );
     }
 
@@ -523,8 +532,8 @@ public partial class MainWindow : Window
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
-            Title = "Import Profiles",
-            Filter = ProfileFileFilter
+            Title = Loc.T("ImportTitle"),
+            Filter = Loc.T("ProfileFileFilter")
         };
 
         if (dialog.ShowDialog(this) != true)
@@ -547,9 +556,7 @@ public partial class MainWindow : Window
         }
 
         var answer = MessageBox.Show(
-            $"Replace all {_profiles.Profiles.Count} current profile(s) with the "
-                + $"{imported.Profiles.Count} profile(s) from this file?\n\n"
-                + "Current profiles will be lost.",
+            Loc.T("ConfirmImport", _profiles.Profiles.Count, imported.Profiles.Count),
             "Mouse Studio",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning
@@ -566,7 +573,7 @@ public partial class MainWindow : Window
         SelectProfile(_profiles.Find(imported.SelectedProfile)!);
 
         Log(
-            $"Imported {imported.Profiles.Count} profile(s) from {dialog.FileName}"
+            Loc.T("LogImported", imported.Profiles.Count, dialog.FileName)
         );
     }
 
@@ -578,6 +585,43 @@ public partial class MainWindow : Window
     )
     {
         new DonateWindow(this).ShowDialog();
+    }
+
+    // ===== Language =====
+
+    // Switches between English and Vietnamese and remembers the choice.
+    private void Language_Click(
+        object sender,
+        RoutedEventArgs e
+    )
+    {
+        Loc.Instance.SetLanguage(
+            Loc.Instance.Language == Loc.English ? Loc.Vietnamese : Loc.English
+        );
+
+        _profiles.Language = Loc.Instance.Language;
+
+        SaveProfiles();
+
+        Log(
+            Loc.T("LogLanguage")
+        );
+    }
+
+    // XAML texts follow the language through bindings; these are set from code.
+    private void OnLanguageChanged()
+    {
+        UpdateOverlayButton();
+
+        UpdateOverlay();
+
+        StatusText.Text = _statusText();
+
+        if (_trayIcon != null)
+        {
+            _trayIcon.ContextMenuStrip?.Dispose();
+            _trayIcon.ContextMenuStrip = CreateTrayMenu();
+        }
     }
 
     // ===== Overlay =====
@@ -613,12 +657,18 @@ public partial class MainWindow : Window
 
         _overlay.Show();
 
-        OverlayButton.Content = "Hide Overlay";
+        UpdateOverlayButton();
+    }
+
+    private void UpdateOverlayButton()
+    {
+        OverlayButton.Content =
+            Loc.T(_overlay == null ? "ShowOverlay" : "HideOverlay");
     }
 
     private void UpdateOverlay()
     {
-        _overlay?.SetMode("Movement", SelectedProfile.Name);
+        _overlay?.SetMode(Loc.T("ModeMovement"), SelectedProfile.Name);
     }
 
     private void HideOverlay()
@@ -632,7 +682,7 @@ public partial class MainWindow : Window
 
         _overlay = null;
 
-        OverlayButton.Content = "Show Overlay";
+        UpdateOverlayButton();
     }
 
     private void OnOverlayMoved()
@@ -671,17 +721,11 @@ public partial class MainWindow : Window
 
     private System.Windows.Forms.NotifyIcon CreateTrayIcon()
     {
-        var menu = new System.Windows.Forms.ContextMenuStrip();
-
-        menu.Items.Add("Open Mouse Studio", null, (_, _) => RestoreFromTray());
-        menu.Items.Add("Hide Overlay", null, (_, _) => HideOverlay());
-        menu.Items.Add("Exit", null, (_, _) => Close());
-
         var trayIcon = new System.Windows.Forms.NotifyIcon
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon(Environment.ProcessPath!),
             Text = "Mouse Studio",
-            ContextMenuStrip = menu
+            ContextMenuStrip = CreateTrayMenu()
         };
 
         trayIcon.MouseClick += (_, e) =>
@@ -693,6 +737,17 @@ public partial class MainWindow : Window
         };
 
         return trayIcon;
+    }
+
+    private System.Windows.Forms.ContextMenuStrip CreateTrayMenu()
+    {
+        var menu = new System.Windows.Forms.ContextMenuStrip();
+
+        menu.Items.Add(Loc.T("TrayOpen"), null, (_, _) => RestoreFromTray());
+        menu.Items.Add(Loc.T("HideOverlay"), null, (_, _) => HideOverlay());
+        menu.Items.Add(Loc.T("TrayExit"), null, (_, _) => Close());
+
+        return menu;
     }
 
     // ===== Script =====
@@ -711,10 +766,10 @@ public partial class MainWindow : Window
             // Don't leave the previous profile's script running.
             _luaEngine.Stop();
 
-            SetStatus(false, $"Stopped · {scriptName} not found");
+            SetStatus(false, () => Loc.T("StatusNotFound", scriptName));
 
             MessageBox.Show(
-                $"Lua script not found: {scriptPath}"
+                Loc.T("ScriptNotFound", scriptPath)
             );
 
             return;
@@ -726,12 +781,12 @@ public partial class MainWindow : Window
             config.GetLuaGlobals()
         );
 
-        SetStatus(true, $"Movement running · {scriptName}");
+        SetStatus(true, () => Loc.T("StatusRunning", scriptName));
     }
 
     private void SetStatus(
         bool running,
-        string text
+        Func<string> text
     )
     {
         var brush = (System.Windows.Media.Brush)FindResource(
@@ -740,7 +795,9 @@ public partial class MainWindow : Window
 
         StatusDot.Fill = brush;
 
-        StatusText.Text = text;
+        _statusText = text;
+
+        StatusText.Text = text();
     }
 
     // The returned profile has no name; it only carries the field values.
@@ -753,49 +810,49 @@ public partial class MainWindow : Window
 
         if (!TryParseMove(MoveXTextBox.Text, out var moveX))
         {
-            error = "MOVE_X must be a number.";
+            error = Loc.T("ErrMoveX");
             return false;
         }
 
         if (!TryParseMove(MoveYTextBox.Text, out var moveY))
         {
-            error = "MOVE_Y must be a number.";
+            error = Loc.T("ErrMoveY");
             return false;
         }
 
         if (!int.TryParse(IntervalTextBox.Text, out var interval))
         {
-            error = "INTERVAL must be a number.";
+            error = Loc.T("ErrInterval");
             return false;
         }
 
         if (!int.TryParse(ActiveDurationTextBox.Text, out var activeDuration))
         {
-            error = "Active Duration must be a number.";
+            error = Loc.T("ErrActiveDuration");
             return false;
         }
 
         if (!int.TryParse(RepeatDelayTextBox.Text, out var repeatDelay))
         {
-            error = "Repeat Delay must be a number.";
+            error = Loc.T("ErrRepeatDelay");
             return false;
         }
 
         if (activeDuration < 1)
         {
-            error = "Active Duration must be >= 1 ms.";
+            error = Loc.T("ErrActiveDurationMin");
             return false;
         }
 
         if (repeatDelay < 0)
         {
-            error = "Repeat Delay must be >= 0 ms.";
+            error = Loc.T("ErrRepeatDelayMin");
             return false;
         }
 
         if (interval < 1)
         {
-            error = "INTERVAL must be >= 1.";
+            error = Loc.T("ErrIntervalMin");
             return false;
         }
 

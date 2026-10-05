@@ -1,3 +1,5 @@
+using MouseStudio.Core.Localization;
+
 namespace MouseStudio.Core.Profiles;
 
 // Everything stored in profiles.json.
@@ -15,6 +17,9 @@ public class ProfileData
 
     public double? OverlayTop { get; set; }
 
+    // UI language code ("en" or "vi"); null means English.
+    public string? Language { get; set; }
+
     public bool CanAddProfile => Profiles.Count < MaxProfiles;
 
     public MovementProfile? Find(string? name) =>
@@ -29,14 +34,14 @@ public class ProfileData
 
         if (name.Length == 0)
         {
-            return "Profile name cannot be empty.";
+            return Loc.T("ErrNameEmpty");
         }
 
         var existing = Find(name);
 
         if (existing != null && existing != renaming)
         {
-            return $"A profile named \"{existing.Name}\" already exists.";
+            return Loc.T("ErrNameTaken", existing.Name);
         }
 
         return null;

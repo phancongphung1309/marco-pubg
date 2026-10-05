@@ -1,6 +1,7 @@
 <Window x:Class="MouseStudio.OverlayWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:MouseStudio.Core.Localization"
         Title="Mouse Studio Overlay"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -12,7 +13,7 @@
         Topmost="True"
         Focusable="False"
         Cursor="SizeAll"
-        ToolTip="Drag to move, double-click to open"
+        ToolTip="{loc:Tr OverlayTip}"
         WindowStartupLocation="Manual">
 
     <Border

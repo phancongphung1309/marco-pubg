@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Threading;
+using MouseStudio.Core.Localization;
 
 namespace MouseStudio;
 
@@ -34,7 +35,7 @@ public partial class App : Application
         WriteCrashLog("DispatcherUnhandledException", e.Exception);
 
         MessageBox.Show(
-            $"Unexpected error:\n{e.Exception.Message}\n\nDetails were written to:\n{CrashLogPath}",
+            Loc.T("UnexpectedError", e.Exception.Message, CrashLogPath),
             "Mouse Studio",
             MessageBoxButton.OK,
             MessageBoxImage.Error
