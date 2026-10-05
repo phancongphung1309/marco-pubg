@@ -12,12 +12,21 @@ public class ProfileData
 
     public string? SelectedProfile { get; set; }
 
+    // What runs the movement; shared by every profile.
+    public TriggerMode TriggerMode { get; set; }
+
+    // Used when TriggerMode is Hotkey.
+    public Hotkey? Hotkey { get; set; }
+
+    // Used when TriggerMode is Combo.
+    public ComboTrigger? Combo { get; set; }
+
     // Where the overlay was last dragged to; null until it has been moved.
     public double? OverlayLeft { get; set; }
 
     public double? OverlayTop { get; set; }
 
-    // UI language code ("en" or "vi"); null means English.
+    // UI language code ("en" or "vi"); null means Vietnamese.
     public string? Language { get; set; }
 
     public bool CanAddProfile => Profiles.Count < MaxProfiles;

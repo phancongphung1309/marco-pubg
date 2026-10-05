@@ -14,6 +14,9 @@ public class MouseHook : IDisposable
 
     private const int WH_MOUSE_LL = 14;
 
+    // Set on events sent by SendInput, e.g. the script's own clicks.
+    private const uint LLMHF_INJECTED = 0x01;
+
     private const int WM_LBUTTONDOWN =
         0x0201;
 
@@ -25,6 +28,12 @@ public class MouseHook : IDisposable
 
     private const int WM_RBUTTONUP =
         0x0205;
+
+    private const int WM_MBUTTONDOWN =
+        0x0207;
+
+    private const int WM_MBUTTONUP =
+        0x0208;
 
     private IntPtr _hookId =
         IntPtr.Zero;
@@ -119,7 +128,11 @@ public class MouseHook : IDisposable
         IntPtr lParam
     )
     {
-        if (nCode >= 0)
+        // Only physical buttons count, as in Logitech scripts: otherwise the
+        // script releasing left during a cooldown would look like the user
+        // letting go of a left-click trigger.
+        if (nCode >= 0
+            && (Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam).flags & LLMHF_INJECTED) == 0)
         {
             var message = wParam.ToInt32();
 
@@ -143,6 +156,16 @@ public class MouseHook : IDisposable
                 case WM_RBUTTONUP:
                     InputState.RightMouseDown = false;
                     MouseUp?.Invoke(2);
+                    break;
+
+                case WM_MBUTTONDOWN:
+                    InputState.MiddleMouseDown = true;
+                    MouseDown?.Invoke(3);
+                    break;
+
+                case WM_MBUTTONUP:
+                    InputState.MiddleMouseDown = false;
+                    MouseUp?.Invoke(3);
                     break;
 
                 case WM_XBUTTONDOWN:

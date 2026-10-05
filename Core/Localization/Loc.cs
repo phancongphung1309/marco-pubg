@@ -13,7 +13,7 @@ public sealed class Loc : INotifyPropertyChanged
 
     public static Loc Instance { get; } = new();
 
-    public string Language { get; private set; } = English;
+    public string Language { get; private set; } = Vietnamese;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -39,10 +39,10 @@ public sealed class Loc : INotifyPropertyChanged
             : string.Format(CultureInfo.InvariantCulture, text, args);
     }
 
-    // Unknown or missing codes select English.
+    // Unknown or missing codes select Vietnamese, the default.
     public void SetLanguage(string? language)
     {
-        language = language == Vietnamese ? Vietnamese : English;
+        language = language == English ? English : Vietnamese;
 
         if (language == Language)
         {

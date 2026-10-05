@@ -113,12 +113,22 @@ public class LuaApi
 
             2 => InputState.RightMouseDown,
 
+            3 => InputState.MiddleMouseDown,
+
             4 => InputState.BackMouseDown,
 
             5 => InputState.ForwardMouseDown,
 
             _ => false
         };
+    }
+
+    // The key or mouse button assigned in the app (Forward by default).
+    public bool IsHotkeyPressed()
+    {
+        ThrowIfStopped();
+
+        return InputState.HotkeyDown;
     }
 
     public void PressMouseButton(int button)

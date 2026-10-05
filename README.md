@@ -1,57 +1,57 @@
 # Mouse Studio
 
-**English** | [Tiếng Việt](README.vi.md)
+**Tiếng Việt** | [English](README.en.md)
 
-A recoil-reduction tool for **PUBG: Battlegrounds** on Windows. While you fire, it pulls the mouse down to counter the gun's vertical recoil, so your aim stays on target without dragging the mouse yourself.
+Công cụ giảm giật (recoil) cho **PUBG: Battlegrounds** trên Windows. Khi bạn bắn, ứng dụng kéo chuột xuống để bù độ giật dọc của súng, giúp tâm ngắm giữ đúng mục tiêu mà bạn không cần tự ghì chuột.
 
-### No Logitech mouse? Don't worry, use this app.
+### Không có chuột Logitech? Đừng lo, dùng ứng dụng này.
 
-Most recoil macros are Lua scripts for Logitech G Hub, so they only work with a Logitech mouse. Mouse Studio runs the same kind of Lua script for **any mouse**: Razer, SteelSeries, a no-name office mouse, whatever you have. No G Hub, no special driver, no extra software.
+Hầu hết macro giảm giật là script Lua cho Logitech G Hub, nên chỉ chạy được với chuột Logitech. Mouse Studio chạy cùng loại script Lua đó cho **mọi loại chuột**: Razer, SteelSeries, chuột văn phòng không thương hiệu, chuột nào cũng được. Không cần G Hub, không cần driver đặc biệt, không cần phần mềm thêm.
 
-It does not read or change the game: it only moves the cursor, like a G Hub macro would. The moves come from Lua scripts, so the patterns can be tuned. G Hub scripts port over easily, since the script functions have the same names (`MoveMouseRelative`, `IsMouseButtonPressed`, `Sleep`, …).
+Ứng dụng không đọc hay thay đổi game: nó chỉ di chuyển con trỏ, giống như một macro G Hub. Các chuyển động đến từ script Lua nên có thể tinh chỉnh. Script G Hub chuyển sang rất dễ vì các hàm có cùng tên (`MoveMouseRelative`, `IsMouseButtonPressed`, `Sleep`, …).
 
-> The mouse needs a Forward side button (most gaming mice have one): the pull-down is triggered by it.
+> Chuột nào cũng dùng được. Mặc định việc kéo xuống được kích hoạt bằng nút bên Forward (đa số chuột gaming đều có), nhưng bạn có thể chọn phím hoặc nút khác, hoặc một tổ hợp như "giữ chuột phải 1 giây, rồi nhấn chuột trái".
 
-### How it works
+### Cách hoạt động
 
-Hold the **Forward** side mouse button to fire and pull the cursor down by a fixed step at a fixed speed, all set by you. Save up to 12 profiles (for other guns, scopes or sensitivities) and switch between them in game with **F1 to F12**.
+Giữ phím kích hoạt (mặc định là nút bên **Forward** của chuột, hoặc phím hay tổ hợp do bạn chọn) để bắn và kéo con trỏ xuống theo một bước cố định với tốc độ cố định, tất cả do bạn cài đặt. Lưu tối đa 12 hồ sơ (cho các súng, ống ngắm hoặc độ nhạy khác nhau) và chuyển đổi giữa chúng ngay trong game bằng **F1 đến F12**.
 
-> **Warning:** using macros or recoil scripts is against the PUBG terms of service. Your account can be banned. Use at your own risk.
+> **Cảnh báo:** dùng macro hoặc script giảm giật là vi phạm điều khoản dịch vụ của PUBG. Tài khoản của bạn có thể bị khóa. Tự chịu rủi ro khi sử dụng.
 
-> **Built 100% with AI.** Every line of code in this project was written by AI through vibe coding. See [About this project](#about-this-project).
+> **Được làm 100% bằng AI.** Mọi dòng code trong dự án này đều do AI viết thông qua vibe coding. Xem [Về dự án này](#về-dự-án-này).
 
-![Mouse Studio with a Movement profile selected and the script log in the console](app_screenshot.png)
+![Mouse Studio với một hồ sơ Movement được chọn và log script trong console](app_screenshot.png)
 
-## Quick start (no install)
+## Bắt đầu nhanh (không cần cài đặt)
 
-1. Download [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/raw/main/Marco-Pubg.zip).
-2. Extract it anywhere, for example to your Desktop. Keep all the files together: `MouseStudio.exe` needs the `Scripts` folder next to it.
-3. Open the `Marco-Pubg` folder and double-click **`MouseStudio.exe`**.
-4. Click **Yes** when Windows asks for administrator rights.
-5. Pick a profile (or press **F1 to F12**), and start the game. Hold Forward to fire.
+1. Tải [Marco-Pubg.zip](https://github.com/phancongphung1309/marco-pubg/raw/main/Marco-Pubg.zip).
+2. Giải nén ở bất kỳ đâu, ví dụ ra Desktop. Giữ tất cả các tệp cùng nhau: `MouseStudio.exe` cần thư mục `Scripts` nằm cạnh nó.
+3. Mở thư mục `Marco-Pubg` và nhấp đúp **`MouseStudio.exe`**.
+4. Bấm **Yes** khi Windows hỏi quyền quản trị (administrator).
+5. Chọn một hồ sơ (hoặc nhấn **F1 đến F12**) rồi vào game. Giữ phím kích hoạt (mặc định là Forward) để bắn.
 
-If Windows shows "Windows protected your PC", click **More info**, then **Run anyway**. The app is not signed, so Windows warns about it.
+Nếu Windows hiện "Windows protected your PC", bấm **More info**, rồi **Run anyway**. Ứng dụng chưa được ký số nên Windows cảnh báo.
 
-Nothing else is needed: .NET is built into the executable. Then see [How to use](#how-to-use).
+Không cần gì thêm: .NET đã được tích hợp sẵn trong tệp thực thi. Tiếp theo xem [Cách sử dụng](#cách-sử-dụng).
 
-## Build from source
+## Build từ mã nguồn
 
-### Requirements
+### Yêu cầu
 
-- Windows 10 or 11 (64-bit)
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), only to build from source
-- Administrator rights: the app asks for them on start (`app.manifest`), so its hooks also work while an elevated game window has focus
+- Windows 10 hoặc 11 (64-bit)
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), chỉ cần khi build từ mã nguồn
+- Quyền quản trị: ứng dụng yêu cầu quyền này khi khởi động (`app.manifest`), để các hook vẫn hoạt động khi cửa sổ game chạy với quyền quản trị đang được focus
 
-### Build and run
+### Build và chạy
 
 ```powershell
 dotnet build MouseStudio.csproj
 dotnet run --project MouseStudio.csproj
 ```
 
-The scripts in `Scripts/` are copied next to the executable on build.
+Các script trong `Scripts/` được sao chép cạnh tệp thực thi khi build.
 
-### Publish a single executable
+### Xuất bản thành một tệp thực thi
 
 ```powershell
 dotnet publish MouseStudio.csproj -c Release -r win-x64 --self-contained true `
@@ -59,150 +59,178 @@ dotnet publish MouseStudio.csproj -c Release -r win-x64 --self-contained true `
   -p:EnableCompressionInSingleFile=true -p:DebugType=None -o Marco-Pubg
 ```
 
-This writes `MouseStudio.exe` and the `Scripts` folder to `Marco-Pubg/`. Ship the whole folder.
+Lệnh này ghi `MouseStudio.exe` và thư mục `Scripts` vào `Marco-Pubg/`. Hãy phân phối cả thư mục.
 
-### Tests
+### Kiểm thử
 
 ```powershell
 dotnet test tests/MouseStudio.Tests
 ```
 
-The xUnit tests cover profile data, name checks, and saving, loading, importing and exporting profiles.
+Các bài test xUnit bao gồm dữ liệu hồ sơ, kiểm tra tên, việc lưu, tải, nhập, xuất hồ sơ, quy tắc phím nóng và thời gian của tổ hợp.
 
-## How to use
+## Cách sử dụng
 
-### 1. Start the app
+### 1. Khởi động ứng dụng
 
-Run `MouseStudio.exe` and accept the administrator prompt. Keep the `Scripts` folder next to the executable: the app runs the scripts in it.
+Chạy `MouseStudio.exe` và chấp nhận yêu cầu quyền quản trị. Giữ thư mục `Scripts` cạnh tệp thực thi: ứng dụng chạy các script trong đó.
 
-On first start the app creates three profiles: **F1 - 5mm**, **F2 - 7mm** and **F3 - RPD**. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing. There is no Start button: the script runs as long as the app is open.
+Lần đầu khởi động, ứng dụng tạo ba hồ sơ: **F1 - 5mm**, **F2 - 7mm** và **F3 - RPD**. Dòng trạng thái ở dưới cùng chuyển sang màu xanh và hiện `Movement đang chạy · movement.lua` khi script đang chạy. Console bên dưới cho biết ứng dụng và script đang làm gì. Không có nút Start: script chạy suốt khi ứng dụng còn mở.
 
-The app starts in English. Click the **EN / VI** button next to **Donate** to switch between English and Vietnamese; the choice is saved in `profiles.json`.
+Ứng dụng mặc định dùng tiếng Việt. Bấm nút **EN / VI** cạnh nút **Ủng hộ** (Donate) để chuyển giữa tiếng Việt và tiếng Anh; lựa chọn được lưu trong `profiles.json`.
 
-### 2. Use Movement
+### 2. Chọn phím kích hoạt
 
-1. Set the values in the Movement panel:
+Thẻ **Hotkey** ở trên cùng quyết định thứ gì khởi chạy di chuyển. Cài đặt này dùng chung cho mọi hồ sơ và được tự động lưu. Chọn chế độ trong danh sách thả xuống của thẻ:
 
-   | Setting | Meaning | Default |
+- **Một phím** (mặc định): di chuyển chạy khi đang giữ một phím. Bấm nút dưới **Phím cần giữ**, rồi nhấn phím hoặc nút chuột muốn dùng. Mặc định là **Chuột Forward**.
+  - Được phép: mọi phím trên bàn phím, hoặc nút giữa, back hay forward của chuột.
+  - Không được phép: **F1 đến F12** (dùng để tải hồ sơ), **Esc** (dùng để hủy), và chuột trái hoặc chuột phải (script tự bấm chuột trái).
+- **Tổ hợp**: di chuyển chạy sau một chuỗi ba bước:
+
+  | Bước | Ý nghĩa | Mặc định |
+  | --- | --- | --- |
+  | 1 · Giữ | Phím hoặc nút chuột cần giữ trước | Chuột phải |
+  | 2 · Trong ít nhất | Thời gian phải giữ bước 1, tính bằng ms (0 đến 60000) | 1000 |
+  | 3 · Rồi nhấn | Phím hoặc nút chuột bắt đầu di chuyển | Chuột trái |
+
+  Ví dụ với giá trị mặc định: giữ chuột phải để ngắm (ADS), chờ một giây, rồi nhấn chuột trái để bắn kèm kéo xuống. Di chuyển chạy khi đang giữ bước 3, và dừng ngay khi thả bước 1 **hoặc** bước 3. Nhấn bước 3 quá sớm, hoặc không giữ bước 1, sẽ không có gì xảy ra. Khi vẫn đang giữ bước 1, bạn có thể thả rồi nhấn lại bước 3 mà không phải chờ lại.
+
+  Bước 1 và bước 3 có thể là bất kỳ phím hay nút chuột nào, kể cả chuột trái và chuột phải, nhưng không được trùng nhau.
+
+Để đổi một phím, bấm vào nút của nó: nút hiện `Nhấn một phím…` cho đến khi bạn nhấn. **Esc**, bấm chỗ khác, hoặc chuyển sang cửa sổ khác sẽ hủy. Console ghi lại mỗi lần thay đổi.
+
+> Phím bàn phím có tác dụng ở mọi nơi, kể cả khi bạn gõ trong các ô của Mouse Studio: nếu chọn **V** làm phím kích hoạt, gõ chữ V ở đó cũng sẽ chạy di chuyển.
+
+### 3. Dùng Movement
+
+1. Đặt các giá trị trong mục Cài đặt di chuyển:
+
+   | Cài đặt | Ý nghĩa | Mặc định |
    | --- | --- | --- |
-   | Horizontal movement | Pixels moved right per step (negative moves left). Fractions such as `0.5` work: they add up across steps. | 0 |
-   | Vertical movement | Pixels moved down per step (negative moves up) | 5 |
-   | Interval | Delay between two steps, in ms (at least 1) | 10 |
-   | Active duration | How long each drag lasts, in ms (at least 1) | 5000 |
-   | Repeat delay | Pause before the next drag, in ms (0 or more) | 1000 |
+   | Di chuyển ngang | Số pixel di chuyển sang phải mỗi bước (giá trị âm sang trái). Có thể dùng số lẻ như `0.5`: chúng được cộng dồn qua các bước. | 0 |
+   | Di chuyển dọc | Số pixel kéo xuống mỗi bước (giá trị âm kéo lên) | 5 |
+   | Chu kỳ | Thời gian giữa hai bước, tính bằng ms (ít nhất 1) | 10 |
+   | Thời gian kích hoạt | Mỗi lần kéo kéo dài bao lâu, tính bằng ms (ít nhất 1) | 5000 |
+   | Độ trễ lặp lại | Thời gian nghỉ trước lần kéo tiếp theo, tính bằng ms (0 trở lên) | 1000 |
 
-   Changes are saved half a second after you stop typing, and the script reloads with them. An invalid value (empty, or out of range) is not saved: the console says why, and the last valid values stay in use.
+   Thay đổi được lưu nửa giây sau khi bạn ngừng gõ, và script tải lại với giá trị mới. Giá trị không hợp lệ (để trống, hoặc ngoài phạm vi) sẽ không được lưu: console cho biết lý do, và các giá trị hợp lệ gần nhất vẫn được dùng.
 
-2. **Hold the Forward side button** (button 5, the front thumb button) on the mouse. While it is held, the app:
-   1. holds the left button down and moves the cursor by one step every Interval, for Active duration;
-   2. releases the left button and waits Repeat delay;
-   3. starts again from step 1.
+2. **Giữ phím kích hoạt** (xem [Chọn phím kích hoạt](#2-chọn-phím-kích-hoạt)). Khi đang giữ, ứng dụng:
+   1. giữ chuột trái và di chuyển con trỏ một bước sau mỗi Chu kỳ, trong suốt Thời gian kích hoạt;
+   2. nhả chuột trái và chờ Độ trễ lặp lại;
+   3. bắt đầu lại từ bước 1.
 
-3. **Release Forward** to stop at once. The left button is released too.
+3. **Nhả phím kích hoạt** để dừng ngay lập tức. Chuột trái cũng được nhả.
 
-### 3. Manage profiles
+### 4. Quản lý hồ sơ
 
-Profiles let you keep several sets of Movement values and switch between them quickly. They are at the top of the settings panel:
+Hồ sơ giúp bạn lưu nhiều bộ giá trị Movement và chuyển đổi nhanh giữa chúng. Chúng nằm ở đầu bảng cài đặt:
 
-- **New**: add a profile (up to 12). It starts with default values.
-- **Rename**: change the name of the selected profile. Names must be unique.
-- **Delete**: remove the selected profile, after a confirmation. The last profile cannot be deleted.
-- **Drop-down list**: select the profile to use.
-- **F1 to F12**: load the 1st to the 12th profile of the list, from anywhere, even while a game has focus. The order is the order of the list.
+- **Mới**: thêm một hồ sơ (tối đa 12). Hồ sơ mới bắt đầu với giá trị mặc định.
+- **Đổi tên**: đổi tên hồ sơ đang chọn. Tên không được trùng nhau.
+- **Xóa**: xóa hồ sơ đang chọn, sau khi xác nhận. Không thể xóa hồ sơ cuối cùng.
+- **Danh sách thả xuống**: chọn hồ sơ để dùng.
+- **F1 đến F12**: tải hồ sơ thứ 1 đến thứ 12 trong danh sách, từ bất kỳ đâu, kể cả khi game đang được focus. Thứ tự là thứ tự trong danh sách.
 
-To back up profiles or move them to another PC:
+Để sao lưu hồ sơ hoặc chuyển sang máy khác:
 
-- **Export** saves all profiles to a `.json` file.
-- **Import** loads a `.json` file made by Export. The file is checked first; if it is valid, the app asks before it **replaces all current profiles** with the ones in the file.
+- **Xuất** lưu toàn bộ hồ sơ ra một tệp `.json`.
+- **Nhập** tải một tệp `.json` được tạo bằng Xuất. Tệp được kiểm tra trước; nếu hợp lệ, ứng dụng sẽ hỏi trước khi **thay thế toàn bộ hồ sơ hiện tại** bằng các hồ sơ trong tệp.
 
-Profiles are stored in `profiles.json` next to the executable.
+Hồ sơ được lưu trong `profiles.json` cạnh tệp thực thi.
 
-### 4. Play with the overlay
+### 5. Chơi với overlay
 
-Click **Show Overlay** before starting the game:
+Bấm **Hiện Overlay** trước khi vào game:
 
-- A small always-on-top box shows the current profile.
-- The main window is hidden to the notification area (tray).
-- Drag the box with the left button to move it. Its position is remembered.
-- Double-click the box, or click the tray icon, to bring the main window back.
-- Right-click the tray icon for **Open Mouse Studio**, **Hide Overlay** and **Exit**.
+- Một hộp nhỏ luôn nằm trên cùng hiển thị hồ sơ hiện tại.
+- Cửa sổ chính được ẩn xuống khay hệ thống (tray).
+- Kéo hộp bằng chuột trái để di chuyển. Vị trí của nó được ghi nhớ.
+- Nhấp đúp vào hộp, hoặc bấm biểu tượng ở khay, để mở lại cửa sổ chính.
+- Nhấp phải biểu tượng ở khay để chọn **Mở Mouse Studio**, **Ẩn Overlay** và **Thoát**.
 
-Click **Hide Overlay** to close the box.
+Bấm **Ẩn Overlay** để đóng hộp.
 
-### Troubleshooting
+### Khắc phục sự cố
 
-- **Nothing happens in game**: make sure the app runs as administrator, and that the status line is green. Check the console for script errors.
-- **`Lua script not found`**: the `Scripts` folder is missing next to `MouseStudio.exe`. Copy it back from the published folder.
-- **A value will not save**: read the `Not saved:` line in the console; it names the field and the allowed range.
-- **Wrong direction**: use negative values for Horizontal (left) or Vertical (up) movement.
+- **Không có gì xảy ra trong game**: đảm bảo ứng dụng chạy với quyền quản trị và dòng trạng thái màu xanh. Kiểm tra console xem có lỗi script không.
+- **Tổ hợp không chạy**: giữ bước 1 ít nhất bằng thời gian đặt ở bước 2 rồi mới nhấn bước 3, và tiếp tục giữ bước 1 trong khi bắn.
+- **`Không tìm thấy script Lua`**: thư mục `Scripts` không nằm cạnh `MouseStudio.exe`. Sao chép lại từ thư mục đã xuất bản.
+- **Một giá trị không lưu được**: đọc dòng `Chưa lưu:` trong console; nó cho biết trường nào và phạm vi cho phép.
+- **Sai hướng**: dùng giá trị âm cho Di chuyển ngang (sang trái) hoặc Di chuyển dọc (lên trên).
 
-## Scripts
+## Script
 
-A script defines `OnEvent(event, arg)`, which Mouse Studio calls with:
+Một script định nghĩa `OnEvent(event, arg)`, được Mouse Studio gọi với:
 
-| Event | `arg` |
+| Sự kiện | `arg` |
 | --- | --- |
-| `PROFILE_ACTIVATED` | `0`, when the script starts |
-| `MOUSE_BUTTON_PRESSED` / `MOUSE_BUTTON_RELEASED` | The button: 1 left, 2 right, 4 back, 5 forward |
-| `KEY_PRESSED` | The virtual-key code (F1 to F12 are kept for profile hotkeys) |
+| `PROFILE_ACTIVATED` | `0`, khi script bắt đầu |
+| `HOTKEY_PRESSED` / `HOTKEY_RELEASED` | `0`, khi phím kích hoạt đặt trong ứng dụng (một phím hoặc tổ hợp) bắt đầu hoặc dừng |
+| `MOUSE_BUTTON_PRESSED` / `MOUSE_BUTTON_RELEASED` | Nút chuột: 1 trái, 2 phải, 3 giữa, 4 back, 5 forward |
+| `KEY_PRESSED` | Mã phím ảo (F1 đến F12 được dành cho phím tắt hồ sơ) |
 
-The profile's settings are set as globals before the script runs: `MOVE_X`, `MOVE_Y`, `INTERVAL`, `ACTIVE_DURATION`, and `REPEAT_DELAY`.
+Chỉ tính nút bấm thật: các cú click do script tự gửi không tạo sự kiện chuột, và `IsMouseButtonPressed` bỏ qua chúng, giống như script Logitech.
 
-Functions available to scripts (`Core/Lua/LuaApi.cs`):
+Các cài đặt của hồ sơ được gán thành biến toàn cục trước khi script chạy: `MOVE_X`, `MOVE_Y`, `INTERVAL`, `ACTIVE_DURATION` và `REPEAT_DELAY`.
 
-| Function | Description |
+Các hàm script có thể dùng (`Core/Lua/LuaApi.cs`):
+
+| Hàm | Mô tả |
 | --- | --- |
-| `MoveMouseRelative(x, y)` | Move the cursor; fractions carry over to the next call |
-| `PressMouseButton(b)` / `ReleaseMouseButton(b)` | Hold or release button 1 (left) or 2 (right) |
-| `ClickMouseButton(b)` | Click button 1 or 2 |
-| `IsMouseButtonPressed(b)` | Whether button 1, 2, 4 or 5 is held |
-| `IsKeyLockOn(key)` | `"capslock"`, `"numlock"` or `"scrolllock"` |
-| `Sleep(ms)` | Wait; ends early when the script is stopped |
-| `GetTickCount()` | Milliseconds since Windows started |
-| `OutputLogMessage(text)` | Write to the app console |
+| `MoveMouseRelative(x, y)` | Di chuyển con trỏ; phần lẻ được cộng sang lần gọi sau |
+| `PressMouseButton(b)` / `ReleaseMouseButton(b)` | Giữ hoặc nhả nút 1 (trái) hoặc 2 (phải) |
+| `ClickMouseButton(b)` | Click nút 1 hoặc 2 |
+| `IsMouseButtonPressed(b)` | Nút 1, 2, 3, 4 hoặc 5 có đang được giữ thật không |
+| `IsHotkeyPressed()` | Phím kích hoạt đặt trong ứng dụng có đang được giữ không |
+| `IsKeyLockOn(key)` | `"capslock"`, `"numlock"` hoặc `"scrolllock"` |
+| `Sleep(ms)` | Chờ; kết thúc sớm khi script bị dừng |
+| `GetTickCount()` | Số mili giây kể từ khi Windows khởi động |
+| `OutputLogMessage(text)` | Ghi ra console của ứng dụng |
 
-The app runs `Scripts/movement.lua`.
+Ứng dụng chạy `Scripts/movement.lua`. Script này phản hồi `HOTKEY_PRESSED` và lặp khi `IsHotkeyPressed()`, nên nó theo bất kỳ phím kích hoạt nào được đặt trong ứng dụng.
 
-## Project layout
+## Cấu trúc dự án
 
 ```
-MainWindow.xaml(.cs)       Main window: profiles, settings, console
-OverlayWindow.xaml(.cs)    Always-on-top status overlay
-ProfileNameDialog.xaml     New / rename profile dialog
-DonateWindow.xaml(.cs)     Donation QR code window
-Core/Input/                Global mouse and keyboard hooks, mouse output
-Core/Lua/                  Lua engine (NLua) and the script API
-Core/Profiles/             Profile model and profiles.json storage
-Core/Localization/         English and Vietnamese UI texts
-Scripts/                   Lua scripts copied next to the executable
-tests/MouseStudio.Tests/   xUnit tests
+MainWindow.xaml(.cs)       Cửa sổ chính: hồ sơ, cài đặt, console
+OverlayWindow.xaml(.cs)    Overlay trạng thái luôn nằm trên cùng
+ProfileNameDialog.xaml     Hộp thoại tạo / đổi tên hồ sơ
+DonateWindow.xaml(.cs)     Cửa sổ mã QR ủng hộ
+Core/Input/                Hook chuột và bàn phím toàn cục, theo dõi phím kích hoạt, điều khiển chuột
+Core/Lua/                  Lua engine (NLua) và API cho script
+Core/Profiles/             Mô hình hồ sơ, phím nóng và tổ hợp, lưu trữ profiles.json
+Core/Localization/         Văn bản giao diện tiếng Anh và tiếng Việt
+Scripts/                   Các script Lua được sao chép cạnh tệp thực thi
+tests/MouseStudio.Tests/   Các bài test xUnit
 ```
 
-## About this project
+## Về dự án này
 
-This project was built **100% with AI, by vibe coding**. No line of the code was typed by hand: the author described what they wanted in plain words, tried the result, and asked the AI for changes until the app worked the way they wanted.
+Dự án này được làm **100% bằng AI, bằng vibe coding**. Không dòng code nào được gõ tay: tác giả mô tả những gì mình muốn bằng lời, thử kết quả, và yêu cầu AI sửa đổi cho đến khi ứng dụng hoạt động đúng như mong muốn.
 
-The AI wrote all of it:
+AI đã viết toàn bộ:
 
-- the WPF app: windows, dark theme, overlay and tray icon;
-- the low-level Windows mouse and keyboard hooks and the mouse output;
-- the Lua engine and the script API, modelled on Logitech G Hub scripts;
-- the profile storage, with import and export;
-- the English and Vietnamese UI;
-- the Lua pull-down script;
-- the unit tests;
-- this README.
+- ứng dụng WPF: các cửa sổ, giao diện tối, overlay và biểu tượng khay;
+- hook chuột và bàn phím cấp thấp của Windows và phần điều khiển chuột;
+- Lua engine và API script, mô phỏng theo script Logitech G Hub;
+- phần lưu trữ hồ sơ, có nhập và xuất;
+- giao diện tiếng Anh và tiếng Việt;
+- script Lua kéo xuống;
+- các bài unit test;
+- README này.
 
-The author's part was the idea, the requirements, testing it in game, tuning the values, and deciding what to keep.
+Phần của tác giả là ý tưởng, yêu cầu, thử nghiệm trong game, tinh chỉnh giá trị, và quyết định giữ lại những gì.
 
-### What this means for you
+### Điều này có ý nghĩa gì với bạn
 
-- **It works, but it was not reviewed line by line by a human developer.** Expect rough edges, and report bugs in the [issues](https://github.com/phancongphung1309/marco-pubg/issues).
-- **The default profiles may not match your mouse sensitivity or scope.** Tune the values, or make your own profiles.
-- **Read the code before you trust it**, as with any tool that runs as administrator and hooks your mouse and keyboard. It is all here, and it is short.
+- **Ứng dụng hoạt động, nhưng chưa được một lập trình viên xem xét từng dòng.** Có thể còn chỗ chưa hoàn thiện; hãy báo lỗi ở mục [issues](https://github.com/phancongphung1309/marco-pubg/issues).
+- **Các hồ sơ mặc định có thể không khớp với độ nhạy chuột hoặc ống ngắm của bạn.** Hãy chỉnh lại giá trị, hoặc tạo hồ sơ riêng.
+- **Hãy đọc code trước khi tin dùng**, như với bất kỳ công cụ nào chạy với quyền quản trị và hook chuột, bàn phím của bạn. Toàn bộ code đều ở đây, và nó ngắn.
 
-It is also an example of what vibe coding can build today: a working Windows desktop app with native hooks, a scripting engine and tests, made without writing code by hand.
+Đây cũng là một ví dụ về những gì vibe coding có thể làm ngày nay: một ứng dụng desktop Windows hoạt động được với hook native, một scripting engine và test, được làm mà không cần tự tay viết code.
 
-## Support
+## Ủng hộ
 
-If the app helps you, you can support the author: click **Donate** in the app to show the QR code (VietQR / Napas 247).
+Nếu ứng dụng hữu ích với bạn, bạn có thể ủng hộ tác giả: bấm **Ủng hộ** (Donate) trong ứng dụng để hiện mã QR (VietQR / Napas 247).

@@ -9,7 +9,6 @@ REPEAT_DELAY =
     REPEAT_DELAY or 1000
 
 
-local FORWARD_BUTTON = 5
 local LEFT_BUTTON = 1
 
 
@@ -24,17 +23,16 @@ function OnEvent(event, arg)
     end
 
 
-    if event == "MOUSE_BUTTON_PRESSED"
-        and arg == FORWARD_BUTTON then
+    -- Sent when the hotkey assigned in the app is pressed
+    -- (Forward side button by default).
+    if event == "HOTKEY_PRESSED" then
 
         OutputLogMessage(
-            "Forward pressed"
+            "Hotkey pressed"
         )
 
 
-        while IsMouseButtonPressed(
-            FORWARD_BUTTON
-        ) do
+        while IsHotkeyPressed() do
 
             -- =================================
             -- ACTIVE PHASE
@@ -52,9 +50,7 @@ function OnEvent(event, arg)
             )
 
 
-            while IsMouseButtonPressed(
-                FORWARD_BUTTON
-            ) do
+            while IsHotkeyPressed() do
 
                 local elapsed =
                     GetTickCount()
@@ -83,10 +79,8 @@ function OnEvent(event, arg)
             )
 
 
-            -- Nếu đã thả Forward
-            if not IsMouseButtonPressed(
-                FORWARD_BUTTON
-            ) then
+            -- Nếu đã thả phím nóng
+            if not IsHotkeyPressed() then
 
                 break
 
@@ -106,9 +100,7 @@ function OnEvent(event, arg)
                 GetTickCount()
 
 
-            while IsMouseButtonPressed(
-                FORWARD_BUTTON
-            ) do
+            while IsHotkeyPressed() do
 
                 local cooldownElapsed =
                     GetTickCount()
@@ -125,10 +117,8 @@ function OnEvent(event, arg)
             end
 
 
-            -- Nếu thả Forward trong cooldown
-            if not IsMouseButtonPressed(
-                FORWARD_BUTTON
-            ) then
+            -- Nếu thả phím nóng trong cooldown
+            if not IsHotkeyPressed() then
 
                 break
 
@@ -148,7 +138,7 @@ function OnEvent(event, arg)
 
 
         OutputLogMessage(
-            "Forward released"
+            "Hotkey released"
         )
 
     end

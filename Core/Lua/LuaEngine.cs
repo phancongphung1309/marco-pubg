@@ -126,6 +126,7 @@ public class LuaEngine : IDisposable
         lua.RegisterFunction("OutputLogMessage", api, type.GetMethod(nameof(LuaApi.OutputLogMessage)));
         lua.RegisterFunction("ClickMouseButton", api, type.GetMethod(nameof(LuaApi.ClickMouseButton)));
         lua.RegisterFunction("IsMouseButtonPressed", api, type.GetMethod(nameof(LuaApi.IsMouseButtonPressed)));
+        lua.RegisterFunction("IsHotkeyPressed", api, type.GetMethod(nameof(LuaApi.IsHotkeyPressed)));
         lua.RegisterFunction("PressMouseButton", api, type.GetMethod(nameof(LuaApi.PressMouseButton)));
         lua.RegisterFunction("ReleaseMouseButton", api, type.GetMethod(nameof(LuaApi.ReleaseMouseButton)));
         lua.RegisterFunction("GetTickCount", api, type.GetMethod(nameof(LuaApi.GetTickCount)));

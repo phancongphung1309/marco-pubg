@@ -39,6 +39,85 @@ public class ProfileStoreTests : IDisposable
     }
 
     [Fact]
+    public void Load_MissingFile_UsesForwardAsHotkey()
+    {
+        var data = new ProfileStore(FilePath).Load(out _);
+
+        Assert.True(data.Hotkey!.Matches(HotkeyKind.Mouse, Hotkey.MouseForward));
+    }
+
+    [Fact]
+    public void Save_ThenLoad_RoundTripsHotkey()
+    {
+        var store = new ProfileStore(FilePath);
+        var data = store.Load(out _);
+        data.Hotkey = new Hotkey { Kind = HotkeyKind.Keyboard, Code = 0x56 };
+
+        store.Save(data);
+        var loaded = store.Load(out var error);
+
+        Assert.Null(error);
+        Assert.True(loaded.Hotkey!.Matches(HotkeyKind.Keyboard, 0x56));
+    }
+
+    [Fact]
+    public void Load_InvalidHotkey_FallsBackToForward()
+    {
+        File.WriteAllText(FilePath, """{ "Hotkey": { "Kind": "Mouse", "Code": 1 } }""");
+
+        var data = new ProfileStore(FilePath).Load(out _);
+
+        Assert.True(data.Hotkey!.Matches(HotkeyKind.Mouse, Hotkey.MouseForward));
+    }
+
+    [Fact]
+    public void Load_MissingFile_UsesHotkeyModeAndDefaultCombo()
+    {
+        var data = new ProfileStore(FilePath).Load(out _);
+
+        Assert.Equal(TriggerMode.Hotkey, data.TriggerMode);
+        Assert.True(data.Combo!.HoldKey!.Matches(HotkeyKind.Mouse, Hotkey.MouseRight));
+        Assert.Equal(1000, data.Combo.HoldMs);
+        Assert.True(data.Combo.PressKey!.Matches(HotkeyKind.Mouse, Hotkey.MouseLeft));
+    }
+
+    [Fact]
+    public void Save_ThenLoad_RoundTripsCombo()
+    {
+        var store = new ProfileStore(FilePath);
+        var data = store.Load(out _);
+        data.TriggerMode = TriggerMode.Combo;
+        data.Combo = new ComboTrigger
+        {
+            HoldKey = new Hotkey { Kind = HotkeyKind.Keyboard, Code = 0x10 },
+            HoldMs = 250,
+            PressKey = Hotkey.Mouse(Hotkey.MouseLeft)
+        };
+
+        store.Save(data);
+        var loaded = store.Load(out var error);
+
+        Assert.Null(error);
+        Assert.Equal(TriggerMode.Combo, loaded.TriggerMode);
+        Assert.True(loaded.Combo!.HoldKey!.Matches(HotkeyKind.Keyboard, 0x10));
+        Assert.Equal(250, loaded.Combo.HoldMs);
+    }
+
+    [Theory]
+    [InlineData("""{ "Combo": { "HoldKey": { "Kind": "Mouse", "Code": 2 }, "HoldMs": 500, "PressKey": { "Kind": "Mouse", "Code": 2 } } }""")]
+    [InlineData("""{ "Combo": { "HoldKey": { "Kind": "Mouse", "Code": 2 }, "HoldMs": -1, "PressKey": { "Kind": "Mouse", "Code": 1 } } }""")]
+    [InlineData("""{ "Combo": { "HoldMs": 500 } }""")]
+    public void Load_InvalidCombo_FallsBackToDefault(string json)
+    {
+        File.WriteAllText(FilePath, json);
+
+        var data = new ProfileStore(FilePath).Load(out _);
+
+        Assert.Equal(1000, data.Combo!.HoldMs);
+        Assert.True(data.Combo.IsValid);
+    }
+
+    [Fact]
     public void Save_ThenLoad_RoundTripsProfilesAndSelection()
     {
         var store = new ProfileStore(FilePath);

@@ -16,6 +16,7 @@
   <!-- The app is a WPF exe; compile the UI-free profile and string code directly. -->
   <ItemGroup>
     <Compile Include="..\..\Core\Profiles\**\*.cs" Link="Profiles\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Compile Include="..\..\Core\Input\TriggerTracker.cs" Link="Input\TriggerTracker.cs" />
     <Compile Include="..\..\Core\Localization\Loc.cs" Link="Localization\Loc.cs" />
     <Compile Include="..\..\Core\Localization\Strings.cs" Link="Localization\Strings.cs" />
   </ItemGroup>

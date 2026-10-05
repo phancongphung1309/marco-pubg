@@ -41,6 +41,20 @@ public partial class MainWindow : Window
     // Set while ShowProfile fills the fields, so that is not seen as an edit.
     private bool _showingProfile;
 
+    // Which key is being assigned, from a click on its button until
+    // a key or mouse button is pressed; null otherwise.
+    private enum HotkeySlot { Single, ComboHold, ComboPress }
+
+    private HotkeySlot? _assigning;
+
+    private readonly TriggerTracker _trigger = new();
+
+    // Set while the trigger controls are filled from code.
+    private bool _updatingTriggerUi;
+
+    // The combo hold time was typed in and is not saved yet.
+    private bool _holdMsEdited;
+
     // Rebuilds the status line text, so it can follow a language change.
     private Func<string> _statusText = () => Loc.T("StatusStopped");
 
@@ -59,11 +73,24 @@ public partial class MainWindow : Window
     private MovementProfile SelectedProfile =>
         (MovementProfile)ProfileComboBox.SelectedItem;
 
+    private Hotkey CurrentHotkey =>
+        _profiles.Hotkey ??= Hotkey.CreateDefault();
+
+    private ComboTrigger CurrentCombo =>
+        _profiles.Combo ??= ComboTrigger.CreateDefault();
+
     public MainWindow()
     {
         InitializeComponent();
 
-        _autoSaveTimer.Tick += (_, _) => FlushAutoSave();
+        _autoSaveTimer.Tick += (_, _) =>
+        {
+            FlushAutoSave();
+            FlushHoldMs();
+        };
+
+        _trigger.Pressed += OnTriggerPressed;
+        _trigger.Released += OnTriggerReleased;
 
         foreach (var box in new[]
         {
@@ -103,6 +130,9 @@ public partial class MainWindow : Window
         _keyboardHook.KeyDown +=
             OnKeyDown;
 
+        _keyboardHook.KeyUp +=
+            OnKeyUp;
+
         _keyboardHook.Start();
 
         _profiles =
@@ -126,6 +156,14 @@ public partial class MainWindow : Window
 
         RefreshProfileList();
 
+        _trigger.Configure(_profiles.TriggerMode, CurrentHotkey, CurrentCombo);
+
+        _updatingTriggerUi = true;
+        HoldMsTextBox.Text = CurrentCombo.HoldMs.ToString();
+        _updatingTriggerUi = false;
+
+        UpdateTriggerUi();
+
         ShowProfile(SelectedProfile);
 
         StartScript(SelectedProfile);
@@ -140,6 +178,12 @@ public partial class MainWindow : Window
     // so the profile switch is deferred and script events are only queued.
     private void OnKeyDown(int vkCode)
     {
+        // The key being assigned is read by OnPreviewKeyDown instead.
+        if (_assigning != null)
+        {
+            return;
+        }
+
         var index = vkCode - VK_F1;
 
         if (index >= 0 && index < ProfileHotkeyCount)
@@ -149,11 +193,18 @@ public partial class MainWindow : Window
             return;
         }
 
+        _trigger.OnDown(HotkeyKind.Keyboard, vkCode);
+
         // Keys other than profile hotkeys also go to the script.
         _luaEngine.Dispatch(
             "KEY_PRESSED",
             vkCode
         );
+    }
+
+    private void OnKeyUp(int vkCode)
+    {
+        _trigger.OnUp(HotkeyKind.Keyboard, vkCode);
     }
 
     private void LoadProfileByHotkey(int index)
@@ -180,6 +231,28 @@ public partial class MainWindow : Window
     // so the event is only queued for the Lua worker thread.
     private void OnMouseDown(int button)
     {
+        if (_assigning is { } slot)
+        {
+            // Combo keys may be any button. For the single hotkey,
+            // a left or right click elsewhere cancels instead.
+            Dispatcher.BeginInvoke(() =>
+            {
+                if (slot != HotkeySlot.Single
+                    || Hotkey.IsAllowed(HotkeyKind.Mouse, button))
+                {
+                    AssignHotkey(HotkeyKind.Mouse, button);
+                }
+                else
+                {
+                    CancelHotkeyAssign();
+                }
+            });
+
+            return;
+        }
+
+        _trigger.OnDown(HotkeyKind.Mouse, button);
+
         _luaEngine.Dispatch(
             "MOUSE_BUTTON_PRESSED",
             button
@@ -188,6 +261,8 @@ public partial class MainWindow : Window
 
     private void OnMouseUp(int button)
     {
+        _trigger.OnUp(HotkeyKind.Mouse, button);
+
         _luaEngine.Dispatch(
             "MOUSE_BUTTON_RELEASED",
             button
@@ -199,6 +274,8 @@ public partial class MainWindow : Window
     )
     {
         FlushAutoSave();
+
+        FlushHoldMs();
 
         base.OnClosing(e);
     }
@@ -577,6 +654,281 @@ public partial class MainWindow : Window
         );
     }
 
+    // ===== Trigger =====
+
+    // The state is set before the event is queued, so the script sees
+    // IsHotkeyPressed() == true when it handles HOTKEY_PRESSED.
+    private void OnTriggerPressed()
+    {
+        InputState.HotkeyDown = true;
+
+        _luaEngine.Dispatch("HOTKEY_PRESSED", 0);
+    }
+
+    private void OnTriggerReleased()
+    {
+        InputState.HotkeyDown = false;
+
+        _luaEngine.Dispatch("HOTKEY_RELEASED", 0);
+    }
+
+    private void TriggerModeComboBox_SelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e
+    )
+    {
+        if (_updatingTriggerUi)
+        {
+            return;
+        }
+
+        _profiles.TriggerMode = TriggerModeComboBox.SelectedIndex == 1
+            ? TriggerMode.Combo
+            : TriggerMode.Hotkey;
+
+        ApplyTrigger();
+    }
+
+    private void HoldMsTextBox_TextChanged(
+        object sender,
+        TextChangedEventArgs e
+    )
+    {
+        if (_updatingTriggerUi)
+        {
+            return;
+        }
+
+        _holdMsEdited = true;
+
+        // Saved with the other fields once typing pauses.
+        _autoSaveTimer.Stop();
+        _autoSaveTimer.Start();
+    }
+
+    // An invalid hold time is not saved; the last valid one stays in use.
+    private void FlushHoldMs()
+    {
+        if (!_holdMsEdited)
+        {
+            return;
+        }
+
+        _holdMsEdited = false;
+
+        if (!int.TryParse(HoldMsTextBox.Text, out var holdMs)
+            || !ComboTrigger.IsValidHoldMs(holdMs))
+        {
+            Log(
+                Loc.T("LogNotSaved", Loc.T("ErrHoldMs", ComboTrigger.MaxHoldMs))
+            );
+
+            return;
+        }
+
+        if (holdMs == CurrentCombo.HoldMs)
+        {
+            return;
+        }
+
+        // The tracker reads the combo on every event: no need to reconfigure.
+        CurrentCombo.HoldMs = holdMs;
+
+        SaveProfiles();
+
+        LogTrigger();
+    }
+
+    // Saves the trigger settings and starts using them.
+    private void ApplyTrigger()
+    {
+        _trigger.Configure(_profiles.TriggerMode, CurrentHotkey, CurrentCombo);
+
+        SaveProfiles();
+
+        UpdateTriggerUi();
+
+        LogTrigger();
+    }
+
+    private void LogTrigger()
+    {
+        Log(
+            _profiles.TriggerMode == TriggerMode.Combo
+                ? Loc.T(
+                    "LogComboSet",
+                    HotkeyName(CurrentCombo.HoldKey!),
+                    CurrentCombo.HoldMs,
+                    HotkeyName(CurrentCombo.PressKey!)
+                )
+                : Loc.T("LogTriggerSingle", HotkeyName(CurrentHotkey))
+        );
+    }
+
+    private void Hotkey_Click(
+        object sender,
+        RoutedEventArgs e
+    )
+    {
+        _assigning = Enum.Parse<HotkeySlot>((string)((Button)sender).Tag);
+
+        UpdateTriggerUi();
+    }
+
+    // Keys are read here rather than from the global hook, so that
+    // marking them handled keeps e.g. Space from clicking the button again.
+    protected override void OnPreviewKeyDown(
+        System.Windows.Input.KeyEventArgs e
+    )
+    {
+        if (_assigning == null)
+        {
+            base.OnPreviewKeyDown(e);
+
+            return;
+        }
+
+        e.Handled = true;
+
+        var key = e.Key == System.Windows.Input.Key.System ? e.SystemKey : e.Key;
+
+        if (key == System.Windows.Input.Key.Escape)
+        {
+            CancelHotkeyAssign();
+
+            return;
+        }
+
+        AssignHotkey(
+            HotkeyKind.Keyboard,
+            System.Windows.Input.KeyInterop.VirtualKeyFromKey(key)
+        );
+    }
+
+    protected override void OnDeactivated(EventArgs e)
+    {
+        CancelHotkeyAssign();
+
+        base.OnDeactivated(e);
+    }
+
+    private void AssignHotkey(
+        HotkeyKind kind,
+        int code
+    )
+    {
+        if (_assigning is not { } slot)
+        {
+            return;
+        }
+
+        _assigning = null;
+
+        var hotkey = new Hotkey { Kind = kind, Code = code };
+
+        var other = slot switch
+        {
+            HotkeySlot.ComboHold => CurrentCombo.PressKey,
+            HotkeySlot.ComboPress => CurrentCombo.HoldKey,
+            _ => null
+        };
+
+        if (!Hotkey.IsAllowed(kind, code, allowLeftRight: slot != HotkeySlot.Single))
+        {
+            Log(
+                Loc.T("LogHotkeyNotAllowed", HotkeyName(hotkey))
+            );
+        }
+        else if (other != null && other.SameAs(hotkey))
+        {
+            Log(
+                Loc.T("LogComboSameKey")
+            );
+        }
+        else
+        {
+            switch (slot)
+            {
+                case HotkeySlot.Single:
+                    _profiles.Hotkey = hotkey;
+                    break;
+
+                case HotkeySlot.ComboHold:
+                    CurrentCombo.HoldKey = hotkey;
+                    break;
+
+                case HotkeySlot.ComboPress:
+                    CurrentCombo.PressKey = hotkey;
+                    break;
+            }
+
+            // Also releases the trigger if the old key was held.
+            ApplyTrigger();
+
+            return;
+        }
+
+        UpdateTriggerUi();
+    }
+
+    private void CancelHotkeyAssign()
+    {
+        if (_assigning == null)
+        {
+            return;
+        }
+
+        _assigning = null;
+
+        UpdateTriggerUi();
+
+        Log(
+            Loc.T("LogHotkeyCancelled")
+        );
+    }
+
+    private void UpdateTriggerUi()
+    {
+        var combo = _profiles.TriggerMode == TriggerMode.Combo;
+
+        _updatingTriggerUi = true;
+        TriggerModeComboBox.SelectedIndex = combo ? 1 : 0;
+        _updatingTriggerUi = false;
+
+        SinglePanel.Visibility = combo ? Visibility.Collapsed : Visibility.Visible;
+        ComboPanel.Visibility = combo ? Visibility.Visible : Visibility.Collapsed;
+
+        HotkeyButton.Content = SlotText(HotkeySlot.Single, CurrentHotkey);
+        ComboHoldButton.Content = SlotText(HotkeySlot.ComboHold, CurrentCombo.HoldKey!);
+        ComboPressButton.Content = SlotText(HotkeySlot.ComboPress, CurrentCombo.PressKey!);
+    }
+
+    private string SlotText(HotkeySlot slot, Hotkey hotkey) =>
+        _assigning == slot ? Loc.T("HotkeyPress") : HotkeyName(hotkey);
+
+    private static string HotkeyName(Hotkey hotkey)
+    {
+        if (hotkey.Kind == HotkeyKind.Mouse)
+        {
+            return hotkey.Code switch
+            {
+                Hotkey.MouseLeft => Loc.T("MouseLeft"),
+                Hotkey.MouseRight => Loc.T("MouseRight"),
+                Hotkey.MouseMiddle => Loc.T("MouseMiddle"),
+                Hotkey.MouseBack => Loc.T("MouseBack"),
+                Hotkey.MouseForward => Loc.T("MouseForward"),
+                _ => $"Mouse {hotkey.Code}"
+            };
+        }
+
+        var key = System.Windows.Input.KeyInterop.KeyFromVirtualKey(hotkey.Code);
+
+        // Number row keys are named D0 to D9.
+        return key >= System.Windows.Input.Key.D0 && key <= System.Windows.Input.Key.D9
+            ? ((int)(key - System.Windows.Input.Key.D0)).ToString()
+            : key.ToString();
+    }
+
     // ===== Donate =====
 
     private void Donate_Click(
@@ -612,6 +964,8 @@ public partial class MainWindow : Window
     private void OnLanguageChanged()
     {
         UpdateOverlayButton();
+
+        UpdateTriggerUi();
 
         UpdateOverlay();
 

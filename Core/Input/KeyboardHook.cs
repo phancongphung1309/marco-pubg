@@ -24,6 +24,9 @@ public class KeyboardHook : IDisposable
     // Raised once per physical press, with the virtual-key code.
     public event Action<int>? KeyDown;
 
+    // Raised when a held key is released, with the virtual-key code.
+    public event Action<int>? KeyUp;
+
     [StructLayout(LayoutKind.Sequential)]
     private struct KBDLLHOOKSTRUCT
     {
@@ -96,7 +99,10 @@ public class KeyboardHook : IDisposable
 
                 case WM_KEYUP:
                 case WM_SYSKEYUP:
-                    _pressed.Remove(vkCode);
+                    if (_pressed.Remove(vkCode))
+                    {
+                        KeyUp?.Invoke(vkCode);
+                    }
                     break;
             }
         }

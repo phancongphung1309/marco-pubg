@@ -53,6 +53,21 @@ public class ProfileStore
         data.SelectedProfile =
             (data.Find(data.SelectedProfile) ?? data.Profiles[0]).Name;
 
+        if (data.Hotkey is not { IsValid: true })
+        {
+            data.Hotkey = Hotkey.CreateDefault();
+        }
+
+        if (data.Combo is not { IsValid: true })
+        {
+            data.Combo = ComboTrigger.CreateDefault();
+        }
+
+        if (!Enum.IsDefined(data.TriggerMode))
+        {
+            data.TriggerMode = TriggerMode.Hotkey;
+        }
+
         return data;
     }
 
