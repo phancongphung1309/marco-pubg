@@ -85,7 +85,6 @@ The **Hotkey** card at the top sets what runs the movement. It is shared by all 
 
 - **Single key** (default): the movement runs while one key is held. Click the button under **Key to hold**, then press the key or mouse button to use. The default is **Mouse Forward**.
   - Allowed: any keyboard key, or the middle, back or forward mouse button.
-  - Not allowed: **F1 to F12** (they load profiles), **Esc** (it cancels), and the left or right mouse button (the script clicks left itself).
 - **Combo**: the movement runs after a sequence of three steps:
 
   | Step | Meaning | Default |
@@ -151,6 +150,25 @@ Click **Show Overlay** before starting the game:
 - Right-click the tray icon for **Open Mouse Studio**, **Hide Overlay** and **Exit**.
 
 Click **Hide Overlay** to close the box.
+
+### Author's setup
+
+The default profiles (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) were tuned in game with this setup. The pull-down is in pixels, so how far it moves your aim depends on your DPI and in-game sensitivity. If yours differ, start from these values and tune Vertical movement until the recoil is cancelled.
+
+- **Mouse DPI:** 1600
+- **PUBG settings** (Settings → Controls → Mouse):
+
+  | Setting | Value |
+  | --- | --- |
+  | Invert Mouse | Disable |
+  | General Sensitivity | 45 |
+  | Vertical Sensitivity Multiplier | 1 |
+  | Aim Sensitivity | 45 |
+  | ADS Sensitivity | 45 |
+  | Universal Sensitivity for All Scopes | Enable |
+  | Scoping Sensitivity | 45 |
+
+With **Universal Sensitivity for All Scopes** enabled, every scope uses the same Scoping Sensitivity, so one profile behaves the same across scopes.
 
 ### Troubleshooting
 
@@ -226,7 +244,7 @@ The author's part was the idea, the requirements, testing it in game, tuning the
 ### What this means for you
 
 - **It works, but it was not reviewed line by line by a human developer.** Expect rough edges, and report bugs in the [issues](https://github.com/phancongphung1309/marco-pubg/issues).
-- **The default profiles may not match your mouse sensitivity or scope.** Tune the values, or make your own profiles.
+- **The default profiles may not match your mouse sensitivity or scope.** They were tuned with the [author's setup](#authors-setup). Tune the values, or make your own profiles.
 - **Read the code before you trust it**, as with any tool that runs as administrator and hooks your mouse and keyboard. It is all here, and it is short.
 
 It is also an example of what vibe coding can build today: a working Windows desktop app with native hooks, a scripting engine and tests, made without writing code by hand.

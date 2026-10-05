@@ -85,7 +85,6 @@ Thẻ **Hotkey** ở trên cùng quyết định thứ gì khởi chạy di chuy
 
 - **Một phím** (mặc định): di chuyển chạy khi đang giữ một phím. Bấm nút dưới **Phím cần giữ**, rồi nhấn phím hoặc nút chuột muốn dùng. Mặc định là **Chuột Forward**.
   - Được phép: mọi phím trên bàn phím, hoặc nút giữa, back hay forward của chuột.
-  - Không được phép: **F1 đến F12** (dùng để tải hồ sơ), **Esc** (dùng để hủy), và chuột trái hoặc chuột phải (script tự bấm chuột trái).
 - **Tổ hợp**: di chuyển chạy sau một chuỗi ba bước:
 
   | Bước | Ý nghĩa | Mặc định |
@@ -151,6 +150,25 @@ Bấm **Hiện Overlay** trước khi vào game:
 - Nhấp phải biểu tượng ở khay để chọn **Mở Mouse Studio**, **Ẩn Overlay** và **Thoát**.
 
 Bấm **Ẩn Overlay** để đóng hộp.
+
+### Cấu hình của tác giả
+
+Các hồ sơ mặc định (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) được tinh chỉnh trong game với cấu hình này. Mức kéo xuống tính bằng pixel, nên tâm ngắm di chuyển bao xa còn tùy vào DPI và độ nhạy trong game của bạn. Nếu cấu hình của bạn khác, hãy bắt đầu từ các giá trị này và chỉnh Di chuyển dọc cho đến khi hết giật.
+
+- **DPI chuột:** 1600
+- **Cài đặt PUBG** (Cài đặt → Điều khiển → Chuột):
+
+  | Cài đặt | Giá trị |
+  | --- | --- |
+  | Hoán đổi chuột (Invert Mouse) | Tắt |
+  | Độ nhạy chung (General Sensitivity) | 45 |
+  | Hệ số nhạy dọc (Vertical Sensitivity Multiplier) | 1 |
+  | Độ nhạy Nhắm (Aim Sensitivity) | 45 |
+  | Độ nhạy Nhắm (ADS Sensitivity) | 45 |
+  | Độ Nhạy cho tất cả các loại Scope (Universal Sensitivity for All Scopes) | Bật |
+  | Độ nhạy Nòng nhắm (Scoping Sensitivity) | 45 |
+
+Game dùng cùng tên "Độ nhạy Nhắm" cho cả Aim và ADS; trong menu, Aim nằm trên ADS. Khi bật **Độ Nhạy cho tất cả các loại Scope**, mọi ống ngắm dùng chung một Độ nhạy Nòng nhắm, nên một hồ sơ hoạt động giống nhau với mọi ống ngắm.
 
 ### Khắc phục sự cố
 
@@ -226,7 +244,7 @@ Phần của tác giả là ý tưởng, yêu cầu, thử nghiệm trong game, 
 ### Điều này có ý nghĩa gì với bạn
 
 - **Ứng dụng hoạt động, nhưng chưa được một lập trình viên xem xét từng dòng.** Có thể còn chỗ chưa hoàn thiện; hãy báo lỗi ở mục [issues](https://github.com/phancongphung1309/marco-pubg/issues).
-- **Các hồ sơ mặc định có thể không khớp với độ nhạy chuột hoặc ống ngắm của bạn.** Hãy chỉnh lại giá trị, hoặc tạo hồ sơ riêng.
+- **Các hồ sơ mặc định có thể không khớp với độ nhạy chuột hoặc ống ngắm của bạn.** Chúng được tinh chỉnh với [cấu hình của tác giả](#cấu-hình-của-tác-giả). Hãy chỉnh lại giá trị, hoặc tạo hồ sơ riêng.
 - **Hãy đọc code trước khi tin dùng**, như với bất kỳ công cụ nào chạy với quyền quản trị và hook chuột, bàn phím của bạn. Toàn bộ code đều ở đây, và nó ngắn.
 
 Đây cũng là một ví dụ về những gì vibe coding có thể làm ngày nay: một ứng dụng desktop Windows hoạt động được với hook native, một scripting engine và test, được làm mà không cần tự tay viết code.
