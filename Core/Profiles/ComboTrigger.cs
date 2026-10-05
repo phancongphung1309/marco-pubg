@@ -9,7 +9,7 @@ public enum TriggerMode
     Combo
 }
 
-// E.g. aim first (hold right click for 1000 ms), then fire (left click):
+// E.g. aim first (hold right click for 50 ms), then fire (left click):
 // the movement runs while the second key is held.
 public class ComboTrigger
 {
@@ -24,7 +24,7 @@ public class ComboTrigger
     public static ComboTrigger CreateDefault() => new()
     {
         HoldKey = Hotkey.Mouse(Hotkey.MouseRight),
-        HoldMs = 1000,
+        HoldMs = 50,
         PressKey = Hotkey.Mouse(Hotkey.MouseLeft)
     };
 

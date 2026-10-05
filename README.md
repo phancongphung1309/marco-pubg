@@ -90,10 +90,10 @@ Thẻ **Hotkey** ở trên cùng quyết định thứ gì khởi chạy di chuy
   | Bước | Ý nghĩa | Mặc định |
   | --- | --- | --- |
   | 1 · Giữ | Phím hoặc nút chuột cần giữ trước | Chuột phải |
-  | 2 · Trong ít nhất | Thời gian phải giữ bước 1, tính bằng ms (0 đến 60000) | 1000 |
+  | 2 · Trong ít nhất | Thời gian phải giữ bước 1, tính bằng ms (0 đến 60000) | 50 |
   | 3 · Rồi nhấn | Phím hoặc nút chuột bắt đầu di chuyển | Chuột trái |
 
-  Ví dụ với giá trị mặc định: giữ chuột phải để ngắm (ADS), chờ một giây, rồi nhấn chuột trái để bắn kèm kéo xuống. Di chuyển chạy khi đang giữ bước 3, và dừng ngay khi thả bước 1 **hoặc** bước 3. Nhấn bước 3 quá sớm, hoặc không giữ bước 1, sẽ không có gì xảy ra. Khi vẫn đang giữ bước 1, bạn có thể thả rồi nhấn lại bước 3 mà không phải chờ lại.
+  Ví dụ với giá trị mặc định: giữ chuột phải để ngắm (ADS), sau 50 ms thì nhấn chuột trái để bắn kèm kéo xuống. Di chuyển chạy khi đang giữ bước 3, và dừng ngay khi thả bước 1 **hoặc** bước 3. Nhấn bước 3 quá sớm, hoặc không giữ bước 1, sẽ không có gì xảy ra. Khi vẫn đang giữ bước 1, bạn có thể thả rồi nhấn lại bước 3 mà không phải chờ lại.
 
   Bước 1 và bước 3 có thể là bất kỳ phím hay nút chuột nào, kể cả chuột trái và chuột phải, nhưng không được trùng nhau.
 

@@ -77,7 +77,7 @@ public class ProfileStoreTests : IDisposable
 
         Assert.Equal(TriggerMode.Hotkey, data.TriggerMode);
         Assert.True(data.Combo!.HoldKey!.Matches(HotkeyKind.Mouse, Hotkey.MouseRight));
-        Assert.Equal(1000, data.Combo.HoldMs);
+        Assert.Equal(50, data.Combo.HoldMs);
         Assert.True(data.Combo.PressKey!.Matches(HotkeyKind.Mouse, Hotkey.MouseLeft));
     }
 
@@ -113,7 +113,7 @@ public class ProfileStoreTests : IDisposable
 
         var data = new ProfileStore(FilePath).Load(out _);
 
-        Assert.Equal(1000, data.Combo!.HoldMs);
+        Assert.Equal(50, data.Combo!.HoldMs);
         Assert.True(data.Combo.IsValid);
     }
 

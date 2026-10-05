@@ -90,10 +90,10 @@ The **Hotkey** card at the top sets what runs the movement. It is shared by all 
   | Step | Meaning | Default |
   | --- | --- | --- |
   | 1 · Hold | The key or mouse button to hold first | Mouse Right |
-  | 2 · For at least | How long step 1 must be held, in ms (0 to 60000) | 1000 |
+  | 2 · For at least | How long step 1 must be held, in ms (0 to 60000) | 50 |
   | 3 · Then press | The key or mouse button that starts the movement | Mouse Left |
 
-  For example, with the defaults: aim down sights by holding right click, wait one second, then press left click to fire with the pull-down. The movement runs while step 3 is held, and stops as soon as step 1 **or** step 3 is released. Pressing step 3 too early, or without holding step 1, does nothing. While step 1 is still held, you can release and press step 3 again without waiting again.
+  For example, with the defaults: aim down sights by holding right click, and after 50 ms press left click to fire with the pull-down. The movement runs while step 3 is held, and stops as soon as step 1 **or** step 3 is released. Pressing step 3 too early, or without holding step 1, does nothing. While step 1 is still held, you can release and press step 3 again without waiting again.
 
   Steps 1 and 3 can be any key or mouse button, including left and right click, but not the same one.
 

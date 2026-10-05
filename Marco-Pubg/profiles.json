@@ -1,0 +1,53 @@
+{
+  "Profiles": [
+    {
+      "Name": "F1 - 5mm",
+      "MoveX": 0,
+      "MoveY": 6,
+      "Interval": 5,
+      "ActiveDuration": 50000,
+      "RepeatDelay": 50
+    },
+    {
+      "Name": "F2 - 7mm",
+      "MoveX": 0,
+      "MoveY": 5,
+      "Interval": 10,
+      "ActiveDuration": 50000,
+      "RepeatDelay": 5
+    },
+    {
+      "Name": "F3 - RPD",
+      "MoveX": 0,
+      "MoveY": 5,
+      "Interval": 10,
+      "ActiveDuration": 50000,
+      "RepeatDelay": 5
+    }
+  ],
+  "SelectedProfile": "F1 - 5mm",
+  "TriggerMode": "Combo",
+  "Hotkey": {
+    "Kind": "Mouse",
+    "Code": 5,
+    "IsValid": true
+  },
+  "Combo": {
+    "HoldKey": {
+      "Kind": "Mouse",
+      "Code": 2,
+      "IsValid": false
+    },
+    "HoldMs": 50,
+    "PressKey": {
+      "Kind": "Mouse",
+      "Code": 1,
+      "IsValid": false
+    },
+    "IsValid": true
+  },
+  "OverlayLeft": null,
+  "OverlayTop": null,
+  "Language": null,
+  "CanAddProfile": true
+}

@@ -19,7 +19,7 @@ public class TriggerTrackerTests
         tracker.Pressed += () => _events.Add("pressed");
         tracker.Released += () => _events.Add("released");
 
-        // Combo: hold right 1000 ms, then left.
+        // Combo: hold right 50 ms, then left.
         tracker.Configure(mode, Hotkey.CreateDefault(), ComboTrigger.CreateDefault());
 
         return tracker;
@@ -56,7 +56,7 @@ public class TriggerTrackerTests
         var tracker = Create(TriggerMode.Combo);
 
         tracker.OnDown(M, Hotkey.MouseRight);
-        _now += 1000;
+        _now += 50;
         tracker.OnDown(M, Hotkey.MouseLeft);
 
         Assert.True(tracker.IsDown);
@@ -68,7 +68,7 @@ public class TriggerTrackerTests
         var tracker = Create(TriggerMode.Combo);
 
         tracker.OnDown(M, Hotkey.MouseRight);
-        _now += 999;
+        _now += 49;
         tracker.OnDown(M, Hotkey.MouseLeft);
 
         Assert.False(tracker.IsDown);
@@ -106,7 +106,7 @@ public class TriggerTrackerTests
         var tracker = Create(TriggerMode.Combo);
 
         tracker.OnDown(M, Hotkey.MouseRight);
-        _now += 1000;
+        _now += 50;
         tracker.OnDown(M, Hotkey.MouseLeft);
         tracker.OnUp(M, button);
 
@@ -120,7 +120,7 @@ public class TriggerTrackerTests
         var tracker = Create(TriggerMode.Combo);
 
         tracker.OnDown(M, Hotkey.MouseRight);
-        _now += 1000;
+        _now += 50;
         tracker.OnDown(M, Hotkey.MouseLeft);
         tracker.OnUp(M, Hotkey.MouseLeft);
         tracker.OnDown(M, Hotkey.MouseLeft);
