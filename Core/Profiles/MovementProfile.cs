@@ -36,7 +36,7 @@ public class MovementProfile
     [
         new()
         {
-            Name = "F1 - 5mm",
+            Name = "F1 - 7mm",
             MoveX = 0,
             MoveY = 6,
             Interval = 5,
@@ -45,7 +45,7 @@ public class MovementProfile
         },
         new()
         {
-            Name = "F2 - 7mm",
+            Name = "F2 - 5mm",
             MoveX = 0,
             MoveY = 5,
             Interval = 10,

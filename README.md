@@ -75,7 +75,7 @@ Các bài test xUnit bao gồm dữ liệu hồ sơ, kiểm tra tên, việc lư
 
 Chạy `MouseStudio.exe` và chấp nhận yêu cầu quyền quản trị. Giữ thư mục `Scripts` cạnh tệp thực thi: ứng dụng chạy các script trong đó.
 
-Lần đầu khởi động, ứng dụng tạo ba hồ sơ: **F1 - 5mm**, **F2 - 7mm** và **F3 - RPD**. Dòng trạng thái ở dưới cùng chuyển sang màu xanh và hiện `Movement đang chạy · movement.lua` khi script đang chạy. Console bên dưới cho biết ứng dụng và script đang làm gì. Không có nút Start: script chạy suốt khi ứng dụng còn mở.
+Lần đầu khởi động, ứng dụng tạo ba hồ sơ: **F1 - 7mm**, **F2 - 5mm** và **F3 - RPD**. Dòng trạng thái ở dưới cùng chuyển sang màu xanh và hiện `Movement đang chạy · movement.lua` khi script đang chạy. Console bên dưới cho biết ứng dụng và script đang làm gì. Không có nút Start: script chạy suốt khi ứng dụng còn mở.
 
 Ứng dụng mặc định dùng tiếng Việt. Bấm nút **EN / VI** cạnh nút **Ủng hộ** (Donate) để chuyển giữa tiếng Việt và tiếng Anh; lựa chọn được lưu trong `profiles.json`.
 
@@ -153,7 +153,7 @@ Bấm **Ẩn Overlay** để đóng hộp.
 
 ### Cấu hình của tác giả
 
-Các hồ sơ mặc định (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) được tinh chỉnh trong game với cấu hình này. Mức kéo xuống tính bằng pixel, nên tâm ngắm di chuyển bao xa còn tùy vào DPI và độ nhạy trong game của bạn. Nếu cấu hình của bạn khác, hãy bắt đầu từ các giá trị này và chỉnh Di chuyển dọc cho đến khi hết giật.
+Các hồ sơ mặc định (**F1 - 7mm**, **F2 - 5mm**, **F3 - RPD**) được tinh chỉnh trong game với cấu hình này. Mức kéo xuống tính bằng pixel, nên tâm ngắm di chuyển bao xa còn tùy vào DPI và độ nhạy trong game của bạn. Nếu cấu hình của bạn khác, hãy bắt đầu từ các giá trị này và chỉnh Di chuyển dọc cho đến khi hết giật.
 
 - **DPI chuột:** 1600
 - **Cài đặt PUBG** (Cài đặt → Điều khiển → Chuột):

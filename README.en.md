@@ -75,7 +75,7 @@ The xUnit tests cover profile data, name checks, saving, loading, importing and 
 
 Run `MouseStudio.exe` and accept the administrator prompt. Keep the `Scripts` folder next to the executable: the app runs the scripts in it.
 
-On first start the app creates three profiles: **F1 - 5mm**, **F2 - 7mm** and **F3 - RPD**. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing. There is no Start button: the script runs as long as the app is open.
+On first start the app creates three profiles: **F1 - 7mm**, **F2 - 5mm** and **F3 - RPD**. The status line at the bottom turns green and reads `Movement running · movement.lua` once the script is running. The console under it shows what the app and the script are doing. There is no Start button: the script runs as long as the app is open.
 
 The app starts in Vietnamese. Click the **EN / VI** button next to **Donate** to switch between Vietnamese and English; the choice is saved in `profiles.json`.
 
@@ -153,7 +153,7 @@ Click **Hide Overlay** to close the box.
 
 ### Author's setup
 
-The default profiles (**F1 - 5mm**, **F2 - 7mm**, **F3 - RPD**) were tuned in game with this setup. The pull-down is in pixels, so how far it moves your aim depends on your DPI and in-game sensitivity. If yours differ, start from these values and tune Vertical movement until the recoil is cancelled.
+The default profiles (**F1 - 7mm**, **F2 - 5mm**, **F3 - RPD**) were tuned in game with this setup. The pull-down is in pixels, so how far it moves your aim depends on your DPI and in-game sensitivity. If yours differ, start from these values and tune Vertical movement until the recoil is cancelled.
 
 - **Mouse DPI:** 1600
 - **PUBG settings** (Settings → Controls → Mouse):

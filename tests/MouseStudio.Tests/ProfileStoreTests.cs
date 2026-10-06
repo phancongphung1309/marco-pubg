@@ -28,14 +28,14 @@ public class ProfileStoreTests : IDisposable
         var data = store.Load(out var error);
 
         Assert.Null(error);
-        Assert.Equal(new[] { "F1 - 5mm", "F2 - 7mm", "F3 - RPD" }, data.Profiles.Select(p => p.Name));
+        Assert.Equal(new[] { "F1 - 7mm", "F2 - 5mm", "F3 - RPD" }, data.Profiles.Select(p => p.Name));
         var profile = data.Profiles[0];
         Assert.Equal(0, profile.MoveX);
         Assert.Equal(6, profile.MoveY);
         Assert.Equal(5, profile.Interval);
         Assert.Equal(50000, profile.ActiveDuration);
         Assert.Equal(50, profile.RepeatDelay);
-        Assert.Equal("F1 - 5mm", data.SelectedProfile);
+        Assert.Equal("F1 - 7mm", data.SelectedProfile);
     }
 
     [Fact]
