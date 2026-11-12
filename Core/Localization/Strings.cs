@@ -69,9 +69,6 @@ internal static class Strings
         ["RepeatDelayHint"] = "Wait time before the next activation",
 
         // Console and status
-        ["Console"] = "Console",
-        ["Clear"] = "Clear",
-        ["StatusStopped"] = "Stopped",
         ["StatusRunning"] = "Movement running · {0}",
         ["StatusNotFound"] = "Stopped · {0} not found",
 
@@ -210,9 +207,6 @@ internal static class Strings
         ["RepeatDelayHint"] = "Thời gian chờ trước lần kích hoạt tiếp theo",
 
         // Console and status
-        ["Console"] = "Console",
-        ["Clear"] = "Xóa",
-        ["StatusStopped"] = "Đã dừng",
         ["StatusRunning"] = "Movement đang chạy · {0}",
         ["StatusNotFound"] = "Đã dừng · không tìm thấy {0}",
 

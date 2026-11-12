@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,9 +61,6 @@ public partial class MainWindow : Window
     private (TextBox Box, TextBlock Hint, TextBlock Error, Func<string, string?> Validate)[] _fieldValidators = [];
 
     private Brush _dangerBrush = Brushes.Red;
-
-    // Rebuilds the status line text, so it can follow a language change.
-    private Func<string> _statusText = () => Loc.T("StatusStopped");
 
     private static readonly string ScriptsFolder =
         Path.Combine(
@@ -1128,8 +1126,6 @@ public partial class MainWindow : Window
 
         RevalidateAllFields();
 
-        StatusText.Text = _statusText();
-
         if (_trayIcon != null)
         {
             _trayIcon.ContextMenuStrip?.Dispose();
@@ -1279,7 +1275,9 @@ public partial class MainWindow : Window
             // Don't leave the previous profile's script running.
             _luaEngine.Stop();
 
-            SetStatus(false, () => Loc.T("StatusNotFound", scriptName));
+            Log(
+                Loc.T("StatusNotFound", scriptName)
+            );
 
             MessageBox.Show(
                 Loc.T("ScriptNotFound", scriptPath)
@@ -1294,23 +1292,9 @@ public partial class MainWindow : Window
             config.GetLuaGlobals()
         );
 
-        SetStatus(true, () => Loc.T("StatusRunning", scriptName));
-    }
-
-    private void SetStatus(
-        bool running,
-        Func<string> text
-    )
-    {
-        var brush = (System.Windows.Media.Brush)FindResource(
-            running ? "SuccessBrush" : "MutedBrush"
+        Log(
+            Loc.T("StatusRunning", scriptName)
         );
-
-        StatusDot.Fill = brush;
-
-        _statusText = text;
-
-        StatusText.Text = text();
     }
 
     // The returned profile has no name; it only carries the field values.
@@ -1404,22 +1388,13 @@ public partial class MainWindow : Window
         });
     }
 
+    // The console UI is gone; kept for diagnosing issues from a debugger.
     private void Log(
         string message
     )
     {
-        ConsoleTextBox.AppendText(
-            $"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}"
+        Debug.WriteLine(
+            $"[{DateTime.Now:HH:mm:ss}] {message}"
         );
-
-        ConsoleTextBox.ScrollToEnd();
-    }
-
-    private void ClearConsole_Click(
-        object sender,
-        RoutedEventArgs e
-    )
-    {
-        ConsoleTextBox.Clear();
     }
 }
