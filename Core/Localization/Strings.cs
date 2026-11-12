@@ -34,8 +34,7 @@ internal static class Strings
 
         // Movement settings
         ["MovementSettings"] = "Movement settings",
-        ["MovementHint"] = "Saved automatically. Runs while the trigger is held.",
-        ["HotKey"] = "Hotkey",
+        ["HotKey"] = "Mode",
         ["HotKeyHint"] = "Saved automatically. Shared by all profiles.",
         ["HotKeyTip"] = "Single key: hold one hotkey. Combo: hold a key for some time, then press another.",
         ["ModeSingle"] = "Single key",
@@ -52,7 +51,7 @@ internal static class Strings
         ["HotkeyTip"] = "Click, then press a key or a mouse button (middle, back or forward). Esc cancels.",
         ["HotkeyPress"] = "Press a key…",
         ["SingleKey"] = "Key to hold",
-        ["HotkeyHint"] = "Runs the movement while held",
+        ["SingleKeyHint"] = "Runs while held; release to stop",
         ["MouseMiddle"] = "Mouse Middle",
         ["MouseBack"] = "Mouse Back",
         ["MouseForward"] = "Mouse Forward",
@@ -172,8 +171,7 @@ internal static class Strings
 
         // Movement settings
         ["MovementSettings"] = "Cài đặt di chuyển",
-        ["MovementHint"] = "Tự động lưu. Chạy khi giữ phím kích hoạt.",
-        ["HotKey"] = "Hotkey",
+        ["HotKey"] = "Chế độ",
         ["HotKeyHint"] = "Tự động lưu. Dùng chung cho mọi hồ sơ.",
         ["HotKeyTip"] = "Một phím: giữ một phím nóng. Tổ hợp: giữ một phím đủ lâu, rồi nhấn phím khác.",
         ["ModeSingle"] = "Một phím",
@@ -190,7 +188,7 @@ internal static class Strings
         ["HotkeyTip"] = "Bấm vào, rồi nhấn một phím hoặc nút chuột (giữa, back hoặc forward). Esc để hủy.",
         ["HotkeyPress"] = "Nhấn một phím…",
         ["SingleKey"] = "Phím cần giữ",
-        ["HotkeyHint"] = "Chạy di chuyển khi đang giữ",
+        ["SingleKeyHint"] = "Chạy khi đang giữ; thả ra sẽ dừng",
         ["MouseMiddle"] = "Chuột giữa",
         ["MouseBack"] = "Chuột Back",
         ["MouseForward"] = "Chuột Forward",

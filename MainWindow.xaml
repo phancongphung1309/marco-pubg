@@ -114,7 +114,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel>
+                            <StackPanel VerticalAlignment="Center">
 
                                 <TextBlock
                                     Text="{loc:Tr HotKey}"
@@ -122,10 +122,9 @@
                                     FontWeight="SemiBold"/>
 
                                 <TextBlock
-                                    Text="{loc:Tr MovementHint}"
-                                    FontSize="12"
-                                    Foreground="{StaticResource MutedBrush}"
-                                    Margin="0,4,0,0"/>
+                                    Text="{loc:Tr HotKeyHint}"
+                                    Style="{StaticResource FieldHint}"
+                                    Margin="0,3,0,0"/>
 
                             </StackPanel>
 
@@ -143,37 +142,30 @@
                         </Grid>
 
                         <!-- Single key: one hotkey, held -->
-                        <Grid x:Name="SinglePanel"
-                                Margin="0,18,0,0">
+                        <StackPanel x:Name="SinglePanel"
+                                    Margin="0,18,0,0"
+                                    MaxWidth="260"
+                                    HorizontalAlignment="Left">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="16"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{loc:Tr SingleKey}"
+                                       Style="{StaticResource FieldLabel}"/>
 
-                            <StackPanel Grid.Column="0">
+                            <Button
+                                x:Name="HotkeyButton"
+                                Tag="Single"
+                                Height="40"
+                                HorizontalAlignment="Stretch"
+                                ToolTip="{loc:Tr HotkeyTip}"
+                                Click="Hotkey_Click"/>
 
-                                <TextBlock Text="{loc:Tr SingleKey}" Style="{StaticResource FieldLabel}"/>
+                            <TextBlock Text="{loc:Tr SingleKeyHint}"
+                                       Style="{StaticResource FieldHint}"/>
 
-                                <Button
-                                    x:Name="HotkeyButton"
-                                    Tag="Single"
-                                    Height="40"
-                                    ToolTip="{loc:Tr HotkeyTip}"
-                                    Click="Hotkey_Click"/>
-
-                                <TextBlock Text="{loc:Tr HotkeyHint}" Style="{StaticResource FieldHint}"/>
-
-                            </StackPanel>
-
-                        </Grid>
+                        </StackPanel>
 
                         <!-- Combo: hold step 1 for step 2 ms, then press step 3 -->
                         <Grid x:Name="ComboPanel"
-                                Margin="0,18,0,0">
+                              Margin="0,18,0,0">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -186,7 +178,7 @@
                             <StackPanel Grid.Column="0">
 
                                 <TextBlock Text="{loc:Tr ComboStep1}"
-                                        Style="{StaticResource FieldLabel}"/>
+                                           Style="{StaticResource FieldLabel}"/>
 
                                 <Button
                                     x:Name="ComboHoldButton"
@@ -196,14 +188,14 @@
                                     Click="Hotkey_Click"/>
 
                                 <TextBlock Text="{loc:Tr ComboStep1Hint}"
-                                        Style="{StaticResource FieldHint}"/>
+                                           Style="{StaticResource FieldHint}"/>
 
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
 
                                 <TextBlock Text="{loc:Tr ComboStep2}"
-                                        Style="{StaticResource FieldLabel}"/>
+                                           Style="{StaticResource FieldLabel}"/>
 
                                 <Grid>
 
@@ -224,14 +216,14 @@
                                 </Grid>
 
                                 <TextBlock Text="{loc:Tr ComboStep2Hint}"
-                                        Style="{StaticResource FieldHint}"/>
+                                           Style="{StaticResource FieldHint}"/>
 
                             </StackPanel>
 
                             <StackPanel Grid.Column="4">
 
                                 <TextBlock Text="{loc:Tr ComboStep3}"
-                                        Style="{StaticResource FieldLabel}"/>
+                                           Style="{StaticResource FieldLabel}"/>
 
                                 <Button
                                     x:Name="ComboPressButton"
@@ -241,7 +233,7 @@
                                     Click="Hotkey_Click"/>
 
                                 <TextBlock Text="{loc:Tr ComboStep3Hint}"
-                                        Style="{StaticResource FieldHint}"/>
+                                           Style="{StaticResource FieldHint}"/>
 
                             </StackPanel>
 
@@ -273,7 +265,7 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center">
+                                        VerticalAlignment="Center">
 
                                 <TextBlock
                                     Text="{loc:Tr Profile}"
@@ -286,8 +278,8 @@
                                         Margin="10,0,0,0"
                                         VerticalAlignment="Center">
                                     <TextBlock Text="F1…F12"
-                                            Style="{StaticResource KeyBadgeText}"
-                                            FontSize="11"/>
+                                               Style="{StaticResource KeyBadgeText}"
+                                               FontSize="11"/>
                                 </Border>
 
                             </StackPanel>
@@ -312,7 +304,7 @@
                             </StackPanel>
 
                             <Grid Grid.Row="2"
-                                    Grid.ColumnSpan="2">
+                                  Grid.ColumnSpan="2">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -378,11 +370,7 @@
                                     FontSize="17"
                                     FontWeight="SemiBold"/>
 
-                                <TextBlock
-                                    Text="{loc:Tr MovementHint}"
-                                    FontSize="12"
-                                    Foreground="{StaticResource MutedBrush}"
-                                    Margin="0,4,0,0"/>
+
 
                             </StackPanel>
 
@@ -399,7 +387,7 @@
                                 <StackPanel Grid.Column="0">
 
                                     <TextBlock Text="{loc:Tr MoveX}"
-                                            Style="{StaticResource FieldLabel}"/>
+                                               Style="{StaticResource FieldLabel}"/>
 
                                     <TextBox
                                         x:Name="MoveXTextBox"
@@ -407,14 +395,14 @@
                                         Height="40"/>
 
                                     <TextBlock Text="{loc:Tr MoveXHint}"
-                                            Style="{StaticResource FieldHint}"/>
+                                               Style="{StaticResource FieldHint}"/>
 
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2">
 
                                     <TextBlock Text="{loc:Tr MoveY}"
-                                            Style="{StaticResource FieldLabel}"/>
+                                               Style="{StaticResource FieldLabel}"/>
 
                                     <TextBox
                                         x:Name="MoveYTextBox"
@@ -422,14 +410,14 @@
                                         Height="40"/>
 
                                     <TextBlock Text="{loc:Tr MoveYHint}"
-                                            Style="{StaticResource FieldHint}"/>
+                                               Style="{StaticResource FieldHint}"/>
 
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="4">
 
                                     <TextBlock Text="{loc:Tr Interval}"
-                                            Style="{StaticResource FieldLabel}"/>
+                                               Style="{StaticResource FieldLabel}"/>
 
                                     <Grid>
 
@@ -450,7 +438,7 @@
                                     </Grid>
 
                                     <TextBlock Text="{loc:Tr IntervalHint}"
-                                            Style="{StaticResource FieldHint}"/>
+                                               Style="{StaticResource FieldHint}"/>
 
                                 </StackPanel>
 
@@ -467,7 +455,7 @@
                                 <StackPanel Grid.Column="0">
 
                                     <TextBlock Text="{loc:Tr ActiveDuration}"
-                                            Style="{StaticResource FieldLabel}"/>
+                                               Style="{StaticResource FieldLabel}"/>
 
                                     <Grid>
 
@@ -488,14 +476,14 @@
                                     </Grid>
 
                                     <TextBlock Text="{loc:Tr ActiveDurationHint}"
-                                            Style="{StaticResource FieldHint}"/>
+                                               Style="{StaticResource FieldHint}"/>
 
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2">
 
                                     <TextBlock Text="{loc:Tr RepeatDelay}"
-                                            Style="{StaticResource FieldLabel}"/>
+                                               Style="{StaticResource FieldLabel}"/>
 
                                     <Grid>
 
@@ -516,7 +504,7 @@
                                     </Grid>
 
                                     <TextBlock Text="{loc:Tr RepeatDelayHint}"
-                                            Style="{StaticResource FieldHint}"/>
+                                               Style="{StaticResource FieldHint}"/>
 
                                 </StackPanel>
 
