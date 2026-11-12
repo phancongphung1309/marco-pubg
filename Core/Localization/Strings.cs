@@ -29,6 +29,8 @@ internal static class Strings
         ["ExportTip"] = "Save all profiles to a file",
         ["ProfileListTip"] = "F1 loads the 1st profile, F2 the 2nd, … (max 12).",
         ["New"] = "New",
+        ["Duplicate"] = "Duplicate",
+        ["DuplicateTip"] = "Create a copy of the selected profile",
         ["Rename"] = "Rename",
         ["Delete"] = "Delete",
 
@@ -83,6 +85,7 @@ internal static class Strings
         ["LogSaved"] = "Profile saved: {0}",
         ["LogSelected"] = "Profile selected: {0}",
         ["LogCreated"] = "Profile created: {0}",
+        ["LogDuplicated"] = "Profile duplicated: {0} -> {1}",
         ["LogRenamed"] = "Profile renamed: {0} -> {1}",
         ["LogDeleted"] = "Profile deleted: {0}",
         ["LogExported"] = "Exported {0} profile(s) to {1}",
@@ -120,6 +123,7 @@ internal static class Strings
 
         // Dialogs
         ["NewProfileTitle"] = "New Profile",
+        ["DuplicateProfileTitle"] = "Duplicate Profile",
         ["RenameProfileTitle"] = "Rename Profile",
         ["ProfileName"] = "Profile name",
         ["Ok"] = "OK",
@@ -166,6 +170,8 @@ internal static class Strings
         ["ExportTip"] = "Lưu toàn bộ hồ sơ ra một tệp",
         ["ProfileListTip"] = "F1 tải hồ sơ thứ 1, F2 hồ sơ thứ 2, … (tối đa 12).",
         ["New"] = "Mới",
+        ["Duplicate"] = "Nhân bản",
+        ["DuplicateTip"] = "Tạo một bản sao của hồ sơ đang chọn",
         ["Rename"] = "Đổi tên",
         ["Delete"] = "Xóa",
 
@@ -220,6 +226,7 @@ internal static class Strings
         ["LogSaved"] = "Đã lưu hồ sơ: {0}",
         ["LogSelected"] = "Đã chọn hồ sơ: {0}",
         ["LogCreated"] = "Đã tạo hồ sơ: {0}",
+        ["LogDuplicated"] = "Đã nhân bản hồ sơ: {0} -> {1}",
         ["LogRenamed"] = "Đã đổi tên hồ sơ: {0} -> {1}",
         ["LogDeleted"] = "Đã xóa hồ sơ: {0}",
         ["LogExported"] = "Đã xuất {0} hồ sơ ra {1}",
@@ -257,6 +264,7 @@ internal static class Strings
 
         // Dialogs
         ["NewProfileTitle"] = "Hồ sơ mới",
+        ["DuplicateProfileTitle"] = "Nhân bản hồ sơ",
         ["RenameProfileTitle"] = "Đổi tên hồ sơ",
         ["ProfileName"] = "Tên hồ sơ",
         ["Ok"] = "OK",

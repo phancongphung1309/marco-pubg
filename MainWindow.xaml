@@ -215,8 +215,14 @@
 
                                 </Grid>
 
-                                <TextBlock Text="{loc:Tr ComboStep2Hint}"
+                                <TextBlock x:Name="ComboStep2HintText"
+                                           Text="{loc:Tr ComboStep2Hint}"
                                            Style="{StaticResource FieldHint}"/>
+
+                                <TextBlock x:Name="ComboStep2ErrorText"
+                                           Style="{StaticResource FieldHint}"
+                                           Foreground="{StaticResource DangerBrush}"
+                                           Visibility="Collapsed"/>
 
                             </StackPanel>
 
@@ -329,6 +335,14 @@
                                         Click="NewProfile_Click"/>
 
                                     <Button
+                                        x:Name="DuplicateProfileButton"
+                                        Content="{loc:Tr Duplicate}"
+                                        Width="92"
+                                        Margin="8,0,0,0"
+                                        ToolTip="{loc:Tr DuplicateTip}"
+                                        Click="DuplicateProfile_Click"/>
+
+                                    <Button
                                         Content="{loc:Tr Rename}"
                                         Width="88"
                                         Margin="8,0,0,0"
@@ -394,8 +408,14 @@
                                         Text="0"
                                         Height="40"/>
 
-                                    <TextBlock Text="{loc:Tr MoveXHint}"
+                                    <TextBlock x:Name="MoveXHintText"
+                                               Text="{loc:Tr MoveXHint}"
                                                Style="{StaticResource FieldHint}"/>
+
+                                    <TextBlock x:Name="MoveXErrorText"
+                                               Style="{StaticResource FieldHint}"
+                                               Foreground="{StaticResource DangerBrush}"
+                                               Visibility="Collapsed"/>
 
                                 </StackPanel>
 
@@ -409,8 +429,14 @@
                                         Text="5"
                                         Height="40"/>
 
-                                    <TextBlock Text="{loc:Tr MoveYHint}"
+                                    <TextBlock x:Name="MoveYHintText"
+                                               Text="{loc:Tr MoveYHint}"
                                                Style="{StaticResource FieldHint}"/>
+
+                                    <TextBlock x:Name="MoveYErrorText"
+                                               Style="{StaticResource FieldHint}"
+                                               Foreground="{StaticResource DangerBrush}"
+                                               Visibility="Collapsed"/>
 
                                 </StackPanel>
 
@@ -437,8 +463,14 @@
 
                                     </Grid>
 
-                                    <TextBlock Text="{loc:Tr IntervalHint}"
+                                    <TextBlock x:Name="IntervalHintText"
+                                               Text="{loc:Tr IntervalHint}"
                                                Style="{StaticResource FieldHint}"/>
+
+                                    <TextBlock x:Name="IntervalErrorText"
+                                               Style="{StaticResource FieldHint}"
+                                               Foreground="{StaticResource DangerBrush}"
+                                               Visibility="Collapsed"/>
 
                                 </StackPanel>
 
@@ -475,8 +507,14 @@
 
                                     </Grid>
 
-                                    <TextBlock Text="{loc:Tr ActiveDurationHint}"
+                                    <TextBlock x:Name="ActiveDurationHintText"
+                                               Text="{loc:Tr ActiveDurationHint}"
                                                Style="{StaticResource FieldHint}"/>
+
+                                    <TextBlock x:Name="ActiveDurationErrorText"
+                                               Style="{StaticResource FieldHint}"
+                                               Foreground="{StaticResource DangerBrush}"
+                                               Visibility="Collapsed"/>
 
                                 </StackPanel>
 
@@ -503,8 +541,14 @@
 
                                     </Grid>
 
-                                    <TextBlock Text="{loc:Tr RepeatDelayHint}"
+                                    <TextBlock x:Name="RepeatDelayHintText"
+                                               Text="{loc:Tr RepeatDelayHint}"
                                                Style="{StaticResource FieldHint}"/>
+
+                                    <TextBlock x:Name="RepeatDelayErrorText"
+                                               Style="{StaticResource FieldHint}"
+                                               Foreground="{StaticResource DangerBrush}"
+                                               Visibility="Collapsed"/>
 
                                 </StackPanel>
 

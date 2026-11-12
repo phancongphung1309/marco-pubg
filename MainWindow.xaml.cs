@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.IO;
 using MouseStudio.Core.Lua;
@@ -55,6 +56,11 @@ public partial class MainWindow : Window
     // The combo hold time was typed in and is not saved yet.
     private bool _holdMsEdited;
 
+    // A field's box, its normal hint, its error text, and how to validate it.
+    private (TextBox Box, TextBlock Hint, TextBlock Error, Func<string, string?> Validate)[] _fieldValidators = [];
+
+    private Brush _dangerBrush = Brushes.Red;
+
     // Rebuilds the status line text, so it can follow a language change.
     private Func<string> _statusText = () => Loc.T("StatusStopped");
 
@@ -82,6 +88,18 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        _dangerBrush = (Brush)FindResource("DangerBrush");
+
+        _fieldValidators =
+        [
+            (MoveXTextBox, MoveXHintText, MoveXErrorText, ValidateMoveX),
+            (MoveYTextBox, MoveYHintText, MoveYErrorText, ValidateMoveY),
+            (IntervalTextBox, IntervalHintText, IntervalErrorText, ValidateInterval),
+            (ActiveDurationTextBox, ActiveDurationHintText, ActiveDurationErrorText, ValidateActiveDuration),
+            (RepeatDelayTextBox, RepeatDelayHintText, RepeatDelayErrorText, ValidateRepeatDelay),
+            (HoldMsTextBox, ComboStep2HintText, ComboStep2ErrorText, ValidateHoldMs)
+        ];
 
         _autoSaveTimer.Tick += (_, _) =>
         {
@@ -319,6 +337,9 @@ public partial class MainWindow : Window
         NewProfileButton.IsEnabled =
             _profiles.CanAddProfile;
 
+        DuplicateProfileButton.IsEnabled =
+            _profiles.CanAddProfile;
+
         DeleteProfileButton.IsEnabled =
             _profiles.Profiles.Count > 1;
     }
@@ -378,6 +399,8 @@ public partial class MainWindow : Window
         TextChangedEventArgs e
     )
     {
+        ValidateChangedField((TextBox)sender);
+
         if (_showingProfile)
         {
             return;
@@ -389,6 +412,92 @@ public partial class MainWindow : Window
         _autoSaveTimer.Stop();
         _autoSaveTimer.Start();
     }
+
+    // Marks a field red with its error below it, as soon as it is typed,
+    // instead of waiting for the auto-save to report it in the console.
+    private void ValidateChangedField(TextBox box)
+    {
+        foreach (var field in _fieldValidators)
+        {
+            if (field.Box == box)
+            {
+                ValidateField(field);
+                return;
+            }
+        }
+    }
+
+    private void ValidateField(
+        (TextBox Box, TextBlock Hint, TextBlock Error, Func<string, string?> Validate) field
+    )
+    {
+        var error = field.Validate(field.Box.Text);
+
+        field.Box.ClearValue(Control.BorderBrushProperty);
+        field.Hint.Visibility = Visibility.Visible;
+        field.Error.Visibility = Visibility.Collapsed;
+
+        if (error == null)
+        {
+            return;
+        }
+
+        field.Box.BorderBrush = _dangerBrush;
+        field.Hint.Visibility = Visibility.Collapsed;
+        field.Error.Text = error;
+        field.Error.Visibility = Visibility.Visible;
+    }
+
+    // Re-runs validation on every field, so an error already shown
+    // follows a language change instead of staying in the old language.
+    private void RevalidateAllFields()
+    {
+        foreach (var field in _fieldValidators)
+        {
+            ValidateField(field);
+        }
+    }
+
+    private static string? ValidateMoveX(string text) =>
+        TryParseMove(text, out _) ? null : Loc.T("ErrMoveX");
+
+    private static string? ValidateMoveY(string text) =>
+        TryParseMove(text, out _) ? null : Loc.T("ErrMoveY");
+
+    private static string? ValidateInterval(string text)
+    {
+        if (!int.TryParse(text, out var value))
+        {
+            return Loc.T("ErrInterval");
+        }
+
+        return value < 1 ? Loc.T("ErrIntervalMin") : null;
+    }
+
+    private static string? ValidateActiveDuration(string text)
+    {
+        if (!int.TryParse(text, out var value))
+        {
+            return Loc.T("ErrActiveDuration");
+        }
+
+        return value < 1 ? Loc.T("ErrActiveDurationMin") : null;
+    }
+
+    private static string? ValidateRepeatDelay(string text)
+    {
+        if (!int.TryParse(text, out var value))
+        {
+            return Loc.T("ErrRepeatDelay");
+        }
+
+        return value < 0 ? Loc.T("ErrRepeatDelayMin") : null;
+    }
+
+    private static string? ValidateHoldMs(string text) =>
+        int.TryParse(text, out var value) && ComboTrigger.IsValidHoldMs(value)
+            ? null
+            : Loc.T("ErrHoldMs", ComboTrigger.MaxHoldMs);
 
     // Saves pending edits and reloads the script with them. Invalid values
     // (e.g. an empty field) are not saved; the last valid ones stay in use.
@@ -493,6 +602,52 @@ public partial class MainWindow : Window
 
         Log(
             Loc.T("LogCreated", profile.Name)
+        );
+    }
+
+    private void DuplicateProfile_Click(
+        object sender,
+        RoutedEventArgs e
+    )
+    {
+        if (!_profiles.CanAddProfile)
+        {
+            return;
+        }
+
+        // Duplicate the saved values, not any unsaved edit in the fields.
+        FlushAutoSave();
+
+        var source = SelectedProfile;
+
+        var dialog = new ProfileNameDialog(
+            this,
+            Loc.T("DuplicateProfileTitle"),
+            _profiles.SuggestCopyName(source.Name),
+            name => _profiles.ValidateName(name)
+        );
+
+        if (dialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        var profile = new MovementProfile
+        {
+            Name = dialog.ProfileName,
+            MoveX = source.MoveX,
+            MoveY = source.MoveY,
+            Interval = source.Interval,
+            ActiveDuration = source.ActiveDuration,
+            RepeatDelay = source.RepeatDelay
+        };
+
+        _profiles.Profiles.Add(profile);
+
+        SelectProfile(profile);
+
+        Log(
+            Loc.T("LogDuplicated", source.Name, profile.Name)
         );
     }
 
@@ -694,6 +849,8 @@ public partial class MainWindow : Window
         TextChangedEventArgs e
     )
     {
+        ValidateChangedField(HoldMsTextBox);
+
         if (_updatingTriggerUi)
         {
             return;
@@ -968,6 +1125,8 @@ public partial class MainWindow : Window
         UpdateTriggerUi();
 
         UpdateOverlay();
+
+        RevalidateAllFields();
 
         StatusText.Text = _statusText();
 

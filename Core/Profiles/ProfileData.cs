@@ -35,6 +35,20 @@ public class ProfileData
         Profiles.FirstOrDefault(p =>
             string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
 
+    // A name for a copy of `name` that nothing else is already using.
+    public string SuggestCopyName(string name)
+    {
+        for (var i = 2; ; i++)
+        {
+            var candidate = $"{name} ({i})";
+
+            if (Find(candidate) == null)
+            {
+                return candidate;
+            }
+        }
+    }
+
     // Returns an error message, or null when the name can be used.
     // Pass the profile being renamed so it may keep (or re-case) its own name.
     public string? ValidateName(string name, MovementProfile? renaming = null)
